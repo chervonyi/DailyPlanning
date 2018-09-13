@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".CreatingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:fontFamily="@font/sansation"
+            android:gravity="center_vertical|center"
+            android:lineSpacingExtra="30sp"
+            android:text="@string/tmp_date"
+            android:textColor="@color/fontGrey"
+            android:textSize="11pt" />
+
+        <EditText
+            android:id="@+id/editNewTaskTitle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/newtask"
+            android:fontFamily="@font/sansation"
+            android:textAlignment="center"
+            android:text="@string/placeholderNewTask"
+            android:textColor="@color/fontWhite"
+            android:textSize="18sp"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/buttonSelectTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bluebutton"
+            android:layout_marginTop="60dp"
+            android:fontFamily="@font/sansation"
+            android:textColor="@color/fontWhite"
+            android:text="@string/select_time"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/greenbutton"
+            android:layout_marginTop="250dp"
+            android:fontFamily="@font/sansation"
+            android:textColor="@color/fontWhite"
+            android:text="@string/saveButton"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

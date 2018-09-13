@@ -4,4 +4,8 @@
     <string name="start">Tap on date to add a new task or just swipe down to review a Task List for today</string>
     <string name="tasksForToday">Tasks  for  today:</string>
     <string name="nothing">No required tasks for today!</string>
+    <string name="select_time">Select time</string>
+    <string name="placeholderNewTask">A new task..</string>
+    <string name="tmp_date">8:20 Tuesday Oct 10</string>
+    <string name="saveButton">SAVE</string>
 </resources>
