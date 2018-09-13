@@ -8,4 +8,6 @@
     <color name="backgroundLightGrey">#7b454545</color>
     <color name="fontGrey">#2e2e2e</color>
     <color name="count">#FF0000</color>
+    <color name="lightRed">#92fd6868</color>
+    <color name="lightBlue">#bd5988ff</color>
 </resources>

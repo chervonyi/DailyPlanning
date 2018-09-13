@@ -7,61 +7,115 @@
     android:background="@drawable/background"
     tools:context=".MainActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewTasks"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/header_corner"
-            android:fontFamily="@font/oswald"
-            android:gravity="center_vertical|center"
-            android:text="@string/tasks"
-            android:textColor="@color/fontWhite"
-            android:textSize="11pt" />
+            android:layout_height="1300dp"
+            android:layout_marginTop="-591dp"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
 
-        <!--<TextView-->
-            <!--android:id="@+id/textViewNumTasks"-->
-            <!--android:layout_width="20dp"-->
-            <!--android:layout_height="20dp"-->
-            <!--android:background="@drawable/count"-->
-            <!--android:fontFamily="@font/oswald"-->
-            <!--android:gravity="center_vertical|center"-->
-            <!--android:text="3"-->
-            <!--android:textColor="@color/fontWhite"-->
-            <!--android:textSize="13sp"-->
-            <!--/>-->
 
-        <TextView
-            android:id="@+id/textViewDate"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:fontFamily="@font/sansation"
-            android:gravity="center_vertical|center"
-            android:lineSpacingExtra="30sp"
-            android:text="8:20  Tuesday  Oct 10"
-            android:textColor="@color/fontGrey"
-            android:textSize="11pt" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="591dp"
+                android:background="@color/backgroundGrey"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewStart"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="200dp"
-            android:background="@color/backgroundLightGrey"
-            android:fontFamily="@font/oswald"
-            android:gravity="center_vertical|center"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:text="@string/start"
-            android:textColor="@color/fontWhite"
-            android:textSize="8pt" />
+                <TextView
+                    android:id="@+id/textViewTasksForToday"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:fontFamily="@font/sansation"
+                    android:gravity="center_vertical|center"
+                    android:text="@string/tasksForToday"
+                    android:textColor="@color/fontWhite"
+                    android:textSize="11pt" />
+
+
+                <TextView
+                    android:id="@+id/textViewNothing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="200dp"
+                    android:fontFamily="@font/oswald"
+                    android:gravity="center_vertical|center"
+                    android:text="@string/nothing"
+                    android:textColor="@color/fontWhite"
+                    android:textSize="8pt" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewTasks"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/header_corner"
+                android:fontFamily="@font/oswald"
+                android:gravity="center_vertical|center"
+                android:text="@string/tasks"
+                android:textColor="@color/fontWhite"
+                android:textSize="11pt" />
+
+
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="@font/sansation"
+                android:gravity="center_vertical|center"
+                android:lineSpacingExtra="30sp"
+                android:text="8:20  Tuesday  Oct 10"
+                android:textColor="@color/fontGrey"
+                android:textSize="11pt" />
+
+            <TextView
+                android:id="@+id/textViewStart"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="200dp"
+                android:background="@color/backgroundLightGrey"
+                android:fontFamily="@font/oswald"
+                android:gravity="center_vertical|center"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:text="@string/start"
+                android:textColor="@color/fontWhite"
+                android:textSize="8pt" />
+        </LinearLayout>
+
+
+
+
 
     </LinearLayout>
+
+
+
 </android.support.constraint.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/textViewNumTasks"-->
+    <!--android:layout_width="20dp"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:background="@drawable/count"-->
+    <!--android:fontFamily="@font/oswald"-->
+    <!--android:gravity="center_vertical|center"-->
+    <!--android:text="3"-->
+    <!--android:textColor="@color/fontWhite"-->
+    <!--android:textSize="13sp"-->
+    <!--/>-->
