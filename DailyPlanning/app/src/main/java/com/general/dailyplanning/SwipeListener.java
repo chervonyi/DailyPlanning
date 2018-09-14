@@ -1,5 +1,6 @@
 package com.general.dailyplanning;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -66,11 +67,12 @@ public class SwipeListener implements OnTouchListener {
 
                     if (currPosition == USUAL_POS && layoutParams.topMargin > SWIPE_LINE_1) {
                         translateTo(SWIPED_POS, 0, -HEIGHT_HIDDEN_PANEL + actualDelta, 200);
-
-
                     } else if (currPosition == SWIPED_POS && layoutParams.topMargin < SWIPE_LINE_2) {
                         translateTo(USUAL_POS, -HEIGHT_HIDDEN_PANEL, HEIGHT_HIDDEN_PANEL + SWIPE_LINE_2, 200);
                     }
+
+                    Log.d("testing", "deltaY: " + deltaY);
+                    Log.d("testing", "actualDelta: " + actualDelta);
                 }
 
                 break;
@@ -99,6 +101,7 @@ public class SwipeListener implements OnTouchListener {
 
         return true;
     }
+
 
 
     private void translateTo(int newPos, int newTopMargin, int fromYDelta, int animDuration ) {
