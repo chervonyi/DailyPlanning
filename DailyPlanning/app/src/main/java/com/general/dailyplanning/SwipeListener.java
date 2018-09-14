@@ -37,6 +37,7 @@ public class SwipeListener implements OnTouchListener {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                TouchDateListener.hide();
                 downY = (int) event.getY();
                 downRawY = (int) event.getRawY();
                 moving = true;

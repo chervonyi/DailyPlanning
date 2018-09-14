@@ -35,7 +35,6 @@
                     android:textColor="@color/fontWhite"
                     android:textSize="11pt" />
 
-
                 <TextView
                     android:id="@+id/textViewNothing"
                     android:layout_width="match_parent"
@@ -63,19 +62,45 @@
             <TextView
                 android:id="@+id/textViewDate"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:fontFamily="@font/sansation"
-                android:gravity="center_vertical|center"
+                android:gravity="bottom|center"
                 android:lineSpacingExtra="30sp"
                 android:text="@string/tmp_date"
                 android:textColor="@color/fontGrey"
                 android:textSize="11pt" />
 
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/buttonAddNewTask"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="50dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/buttonadd"
+                    android:fontFamily="@font/oswald"
+                    android:onClick="onClickAddNewTask"
+                    android:text="+"
+                    android:textColor="@color/fontWhite"
+                    android:textSize="23pt"
+                    android:visibility="invisible"
+                    tools:layout_editor_absoluteX="155dp" />
+
+
+            </LinearLayout>
+
+
+
             <TextView
                 android:id="@+id/textViewStart"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="150dp"
                 android:background="@color/backgroundLightGrey"
                 android:fontFamily="@font/oswald"
                 android:gravity="center_vertical|center"
