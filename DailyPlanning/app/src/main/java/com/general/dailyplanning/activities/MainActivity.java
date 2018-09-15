@@ -1,4 +1,4 @@
-package com.general.dailyplanning;
+package com.general.dailyplanning.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,19 +6,26 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.general.dailyplanning.R;
+import com.general.dailyplanning.data.DataManipulator;
+import com.general.dailyplanning.data.Vault;
+import com.general.dailyplanning.listeners.SwipeListener;
+import com.general.dailyplanning.listeners.TouchDateListener;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+
+    private ArrayList<String> tasks = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -35,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
         TouchDateListener touchDateListener = new TouchDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
         dateView.setOnTouchListener(touchDateListener);
 
+
+        // Loading data
+        Vault vault = DataManipulator.loading(this, "data");
+        if (vault != null) {
+            Vault.setInstance(vault);
+            tasks = vault.getArray();
+        }
     }
 
     public void vibrate(long milliSeconds) {
@@ -43,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createOneShot(milliSeconds,VibrationEffect.DEFAULT_AMPLITUDE));
         }else{
-            //deprecated in API 26
             v.vibrate(milliSeconds);
         }
     }

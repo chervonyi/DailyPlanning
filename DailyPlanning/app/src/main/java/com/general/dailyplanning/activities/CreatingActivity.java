@@ -1,12 +1,14 @@
-package com.general.dailyplanning;
+package com.general.dailyplanning.activities;
 
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import com.general.dailyplanning.data.*;
+
+import com.general.dailyplanning.R;
 
 import java.util.Calendar;
 
@@ -57,17 +62,6 @@ public class CreatingActivity extends AppCompatActivity {
         });
     }
 
-    public void vibrate(long milliSeconds) {
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(milliSeconds,VibrationEffect.DEFAULT_AMPLITUDE));
-        }else{
-            //deprecated in API 26
-            v.vibrate(milliSeconds);
-        }
-    }
-
     public void onClickSelectTime(View view) {
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -98,7 +92,21 @@ public class CreatingActivity extends AppCompatActivity {
     }
 
     public void onClickSave(View view) {
+        String titleOfask = newTask.getText().toString();
 
+        // Get current state of Vault
+        Vault vault = Vault.getInstance();
+
+        // Update vault
+        vault.add(titleOfask);
+
+        // Save vault
+        // TODO: Move Vault's saving into onClose() method
+        DataManipulator.saving(this, "data", vault);
+
+        // Go back to planning screen
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
 

@@ -1,4 +1,4 @@
-package com.general.dailyplanning;
+package com.general.dailyplanning.listeners;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.general.dailyplanning.activities.MainActivity;
 
 public class TouchDateListener implements View.OnTouchListener {
     private int posX = 0;

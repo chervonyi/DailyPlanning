@@ -1,4 +1,4 @@
-package com.general.dailyplanning;
+package com.general.dailyplanning.listeners;
 
 import android.util.Log;
 import android.view.MotionEvent;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
+
+import com.general.dailyplanning.activities.MainActivity;
 
 public class SwipeListener implements OnTouchListener {
     private final int USUAL_POS = 0;
