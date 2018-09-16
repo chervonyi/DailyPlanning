@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        findViewById(R.id.scrollLayout).setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                TouchDateListener.hide();
+                return false;
+            }
+
+        });
+
         TextView taskView = findViewById(R.id.textViewTasks);
         TextView dateView = findViewById(R.id.textViewDate);
 
@@ -43,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         TouchDateListener touchDateListener = new TouchDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
         dateView.setOnTouchListener(touchDateListener);
 
-
         // Loading data
         Vault vault = DataManipulator.loading(this, "data");
         if (vault != null) {
@@ -51,19 +62,27 @@ public class MainActivity extends AppCompatActivity {
             tasks = vault.getArray();
         }
 
-
-        // TODO: Continue from here - Add scrolling panel and fill it from ArrayList<String> tasks
+        updateTasksList();
     }
 
-    public void vibrate(long milliSeconds) {
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    @SuppressLint("ResourceAsColor")
+    private void updateTasksList() {
+        LinearLayout scrollLaypout = findViewById(R.id.scrollLayout);
+        if (scrollLaypout.getChildCount() > 0) {
+            scrollLaypout.removeAllViews();
+        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(milliSeconds,VibrationEffect.DEFAULT_AMPLITUDE));
-        }else{
-            v.vibrate(milliSeconds);
+        TextView view = null;
+
+        for (Task task: tasks) {
+            view = new TextView(this);
+            view.setText(task.toString());
+            view.setBackgroundColor(R.color.backgroundGrey);
+            view.setTextSize(20);
+            scrollLaypout.addView(view);
         }
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -76,4 +95,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         TouchDateListener.hide();
     }
+
+    public void vibrate(long milliSeconds) {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(milliSeconds,VibrationEffect.DEFAULT_AMPLITUDE));
+        }else{
+            v.vibrate(milliSeconds);
+        }
+    }
+
+
 }

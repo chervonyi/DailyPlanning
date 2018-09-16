@@ -30,8 +30,8 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        String sHours = hours == 0 ? "00" : String.valueOf(hours);
-        String sMin = minutes == 0 ? "00" : String.valueOf(minutes);
+        String sHours = hours < 10 ? "0" + hours : String.valueOf(hours);
+        String sMin = minutes < 10 ? "0" + minutes : String.valueOf(minutes);
         return sHours + ":" + sMin + " - " + task;
     }
 

@@ -8,6 +8,7 @@
     tools:context=".activities.MainActivity">
 
     <LinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -18,6 +19,7 @@
             android:layout_marginTop="-591dp"
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,13 +64,15 @@
             <TextView
                 android:id="@+id/textViewDate"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:fontFamily="@font/sansation"
-                android:gravity="bottom|center"
+                android:gravity="center_vertical|center"
                 android:lineSpacingExtra="30sp"
                 android:text="@string/tmp_date"
                 android:textColor="@color/fontGrey"
                 android:textSize="11pt" />
+
+
 
 
             <LinearLayout
@@ -96,6 +100,23 @@
 
 
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:overScrollMode="never"
+                android:layout_marginTop="-50dp">
+
+                <LinearLayout
+                    android:id="@+id/scrollLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+            </ScrollView>
+
+
             <TextView
                 android:id="@+id/textViewStart"
                 android:layout_width="match_parent"
@@ -108,7 +129,9 @@
                 android:paddingRight="40dp"
                 android:text="@string/start"
                 android:textColor="@color/fontWhite"
-                android:textSize="8pt" />
+                android:textSize="8pt"
+                android:visibility="invisible" />
+
         </LinearLayout>
 
     </LinearLayout>

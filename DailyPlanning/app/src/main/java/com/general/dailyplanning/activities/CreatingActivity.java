@@ -71,8 +71,8 @@ public class CreatingActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
-                String hours = selectedHour == 0 ? "00" : String.valueOf(selectedHour);
-                String minutes = selectedMinute == 0 ? "00" : String.valueOf(selectedMinute);
+                String hours = selectedHour < 10 ? "0" + selectedHour : String.valueOf(selectedHour);
+                String minutes = selectedMinute < 10 ? "0" + selectedMinute : String.valueOf(selectedMinute);
 
                 String tmp = "";
                 // Pattern: "12:34 - Reading a book"
