@@ -70,6 +70,7 @@ public class CreatingActivity extends AppCompatActivity {
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
                 String hours = selectedHour == 0 ? "00" : String.valueOf(selectedHour);
                 String minutes = selectedMinute == 0 ? "00" : String.valueOf(selectedMinute);
 
@@ -98,7 +99,7 @@ public class CreatingActivity extends AppCompatActivity {
         Vault vault = Vault.getInstance();
 
         // Update vault
-        vault.add(titleOfask);
+        vault.add(new Task(titleOfask));
 
         // Save vault
         // TODO: Move Vault's saving into onClose() method

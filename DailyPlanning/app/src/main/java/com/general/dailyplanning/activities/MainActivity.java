@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.general.dailyplanning.R;
 import com.general.dailyplanning.data.DataManipulator;
+import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
 import com.general.dailyplanning.listeners.SwipeListener;
 import com.general.dailyplanning.listeners.TouchDateListener;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> tasks = new ArrayList<>();
+    private ArrayList<Task> tasks = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
             Vault.setInstance(vault);
             tasks = vault.getArray();
         }
+
+
+        // TODO: Continue from here - Add scrolling panel and fill it from ArrayList<String> tasks
     }
 
     public void vibrate(long milliSeconds) {
