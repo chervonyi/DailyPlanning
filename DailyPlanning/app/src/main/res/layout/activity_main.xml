@@ -8,12 +8,13 @@
     tools:context=".activities.MainActivity">
 
     <LinearLayout
-        android:id="@+id/mainLayout"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="1300dp"
             android:layout_marginTop="-591dp"
@@ -61,32 +62,45 @@
                 android:textSize="11pt" />
 
 
-            <TextView
-                android:id="@+id/textViewDate"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:fontFamily="@font/sansation"
-                android:gravity="center_vertical|center"
-                android:lineSpacingExtra="30sp"
-                android:text="@string/tmp_date"
-                android:textColor="@color/fontGrey"
-                android:textSize="11pt" />
 
-
-
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
+            <FrameLayout
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_width="match_parent">
 
+                <TextView
+                    android:id="@+id/textViewDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:fontFamily="@font/sansation"
+                    android:gravity="center_vertical|center"
+                    android:text="@string/tmp_date"
+                    android:textColor="@color/fontGrey"
+                    android:textSize="11pt" />
+
+                <ScrollView
+                    android:id="@+id/scrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_marginTop="70dp"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:id="@+id/scrollLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    </LinearLayout>
+                </ScrollView>
+
+                <!--android:layout_gravity="center"-->
                 <Button
                     android:id="@+id/buttonAddNewTask"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="50dp"
                     android:layout_height="70dp"
-                    android:background="@drawable/buttonadd"
+                    android:layout_marginTop="30dp"
+                    android:layout_gravity="top|center"
+                    android:background="@drawable/button_add"
                     android:fontFamily="@font/oswald"
                     android:onClick="onClickAddNewTask"
                     android:text="+"
@@ -95,28 +109,26 @@
                     android:visibility="invisible"
                     tools:layout_editor_absoluteX="155dp" />
 
-
-            </LinearLayout>
-
+            </FrameLayout>
 
 
-            <ScrollView
+
+            <Button
+                android:id="@+id/buttonSave"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:overScrollMode="never"
-                android:layout_marginTop="-50dp">
-
-                <LinearLayout
-                    android:id="@+id/scrollLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_green"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/sansation"
+                android:textColor="@color/fontWhite"
+                android:text="@string/saveButton"
+                android:textSize="14sp"/>
 
 
-                </LinearLayout>
-            </ScrollView>
 
 
+
+            <!--Move to ScrollView-->
             <TextView
                 android:id="@+id/textViewStart"
                 android:layout_width="match_parent"
@@ -131,6 +143,8 @@
                 android:textColor="@color/fontWhite"
                 android:textSize="8pt"
                 android:visibility="invisible" />
+
+
 
         </LinearLayout>
 

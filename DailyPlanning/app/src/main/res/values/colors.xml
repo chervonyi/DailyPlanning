@@ -7,6 +7,7 @@
     <color name="backgroundLightGrey">#7b454545</color>
     <color name="fontGrey">#2e2e2e</color>
     <color name="fontLightGrey">#aeabab</color>
+    <color name="hint">#d9d5d5</color>
     <color name="fontWhite">#ffffff</color>
     <color name="lightRed">#92fd6868</color>
     <color name="lightBlue">#bd5988ff</color>

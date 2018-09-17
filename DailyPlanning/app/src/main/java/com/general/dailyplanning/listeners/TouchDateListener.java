@@ -28,41 +28,42 @@ public class TouchDateListener implements View.OnTouchListener {
         this.mainActivity = mainActivity;
         this.buttonAdd = buttonAdd;
 
-        linearLayout = (LinearLayout) buttonAdd.getParent();
-        layoutParams = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
+        //linearLayout = (LinearLayout) buttonAdd.getParent();
+        //layoutParams = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
         if (buttonAdd.getVisibility() == View.INVISIBLE) {
-            posX = (int) event.getRawX();
+            buttonAdd.setVisibility(View.VISIBLE);
 
-            if (posX > LEFT_SCOPE && posX < RIGHT_SCOPE) {
-                // Move button on touch position
-                layoutParams.leftMargin = posX;
-                linearLayout.setLayoutParams(layoutParams);
+            Animation anim = new ScaleAnimation(
+                    0, 1f, // Start and end values for the X axis scaling
+                    0, 1, // Start and end values for the Y axis scaling
+                    Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                    Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
+            anim.setFillAfter(false); // Needed to keep the result of the animation
+            anim.setDuration(200);
+            buttonAdd.startAnimation(anim);
 
-                // Show button
-                buttonAdd.setVisibility(View.VISIBLE);
 
-                // Animate appearance
-                Animation anim = new ScaleAnimation(
-                        0, 1f, // Start and end values for the X axis scaling
-                        0, 1, // Start and end values for the Y axis scaling
-                        Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
-                        Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
-                anim.setFillAfter(false); // Needed to keep the result of the animation
-                anim.setDuration(200);
-                buttonAdd.startAnimation(anim);
-
-                isHidden = false;
-            }
+            isHidden = false;
         }
         return true;
     }
 
     public static void hide() {
        if (!isHidden) {
+           isHidden = true;
+           Animation anim = new ScaleAnimation(
+                   1, 0, // Start and end values for the X axis scaling
+                   1, 0, // Start and end values for the Y axis scaling
+                   Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                   Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
+           anim.setFillAfter(false); // Needed to keep the result of the animation
+           anim.setDuration(200);
+           buttonAdd.startAnimation(anim);
+
            buttonAdd.setVisibility(View.INVISIBLE);
        }
     }
