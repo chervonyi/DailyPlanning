@@ -8,19 +8,22 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.general.dailyplanning.activities.MainActivity;
+import com.general.dailyplanning.activities.UsingActivity;
 
-public class TouchDateListener implements View.OnTouchListener {
+public class TouchSwipeDateListener implements View.OnTouchListener {
     private int posX = 0;
     private static boolean isHidden = true;
     private final int LEFT_SCOPE = 150;
     private final int RIGHT_SCOPE = 550;
 
-    public MainActivity mainActivity;
+
+
+    public UsingActivity usingActivity;
     private static Button buttonAdd;
 
-    public TouchDateListener(MainActivity mainActivity, Button buttonAdd) {
+    public TouchSwipeDateListener(UsingActivity usingActivity, Button buttonAdd) {
         posX = -1;
-        this.mainActivity = mainActivity;
+        this.usingActivity = usingActivity;
         this.buttonAdd = buttonAdd;
     }
 
@@ -37,6 +40,7 @@ public class TouchDateListener implements View.OnTouchListener {
             anim.setFillAfter(false); // Needed to keep the result of the animation
             anim.setDuration(200);
             buttonAdd.startAnimation(anim);
+
 
             isHidden = false;
         }
@@ -58,5 +62,6 @@ public class TouchDateListener implements View.OnTouchListener {
            buttonAdd.setVisibility(View.INVISIBLE);
        }
     }
+
 
 }

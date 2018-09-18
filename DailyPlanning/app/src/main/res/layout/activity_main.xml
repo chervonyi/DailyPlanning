@@ -78,7 +78,7 @@
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="472dp"
                     android:layout_marginTop="70dp"
                     android:overScrollMode="never">
 
@@ -116,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_green"
-                android:layout_marginTop="20dp"
+                android:layout_gravity="bottom"
                 android:fontFamily="@font/sansation"
                 android:textColor="@color/fontWhite"
                 android:text="@string/saveButton"
