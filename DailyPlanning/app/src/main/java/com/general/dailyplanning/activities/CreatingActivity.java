@@ -106,6 +106,7 @@ public class CreatingActivity extends AppCompatActivity {
         DataManipulator.saving(this, "data", vault);
 
         // Go back to planning screen
+        // TODO: Maybe should replace MainActivity on UsingActivity, because after creating at least one task, app should show UsingActivity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".activities.UsingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:fontFamily="@font/sansation"
+                android:gravity="center_vertical|center"
+                android:text="@string/tmp_date"
+                android:textColor="@color/fontGrey"
+                android:textSize="11pt" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="70dp"
+                android:overScrollMode="never">
+
+                <LinearLayout
+                    android:id="@+id/scrollLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </ScrollView>
+
+            <Button
+                android:id="@+id/buttonAddNewTask"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="50dp"
+                android:layout_height="70dp"
+                android:layout_gravity="top|center"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/button_add"
+                android:fontFamily="@font/oswald"
+                android:onClick="onClickAddNewTask"
+                android:text="+"
+                android:textColor="@color/fontWhite"
+                android:textSize="23pt"
+                android:visibility="invisible"
+                tools:layout_editor_absoluteX="155dp" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
