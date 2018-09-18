@@ -8,4 +8,5 @@
     <string name="placeholderNewTask">A new task..</string>
     <string name="tmp_date">8:20 Tuesday Oct 10</string>
     <string name="saveButton">SAVE</string>
+    <string name="remind_tomorrow">Remind Tomorrow</string>
 </resources>

@@ -1,7 +1,11 @@
 package com.general.dailyplanning.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.general.dailyplanning.R;
@@ -34,10 +39,13 @@ public class UsingActivity extends AppCompatActivity implements View.OnTouchList
         setContentView(R.layout.activity_using);
 
         TextView dateView = findViewById(R.id.textViewDate);
+        RelativeLayout layoutDate = findViewById(R.id.layoutDate);
+
 
         // Set touch listener to show "+" button
         TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
-        dateView.setOnTouchListener(swdl);
+        layoutDate.setOnTouchListener(swdl);
+        //dateView.setOnTouchListener(swdl);
 
         // Set touch listener to hide "+" button
         findViewById(R.id.scrollLayout).setOnTouchListener(this);
@@ -51,6 +59,10 @@ public class UsingActivity extends AppCompatActivity implements View.OnTouchList
 
         updateTasksList();
     }
+
+    // TODO-LIST:
+    // [ ] Make vibrate method - static in own class Vibrate.java
+    // [ ] In MainActivity show "+" button only on ACTION_UP
 
     private void updateTasksList() {
         LinearLayout scrollLayout = findViewById(R.id.scrollLayout);
@@ -82,10 +94,24 @@ public class UsingActivity extends AppCompatActivity implements View.OnTouchList
         TouchSwipeDateListener.hide();
     }
 
+    public void onClickRemindTomorrow(View view) {
+
+    }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         TouchSwipeDateListener.hide();
         return false;
+    }
+
+    public void vibrate(long milliSeconds) {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(milliSeconds,VibrationEffect.DEFAULT_AMPLITUDE));
+        }else{
+            v.vibrate(milliSeconds);
+        }
     }
 }

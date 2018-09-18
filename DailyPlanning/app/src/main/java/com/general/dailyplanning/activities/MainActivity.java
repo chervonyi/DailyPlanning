@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         updateTasksList();
     }
 
+
     private void updateTasksList() {
         LinearLayout scrollLayout = findViewById(R.id.scrollLayout);
         if (scrollLayout.getChildCount() > 0) {
