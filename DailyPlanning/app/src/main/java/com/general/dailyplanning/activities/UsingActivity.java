@@ -45,7 +45,6 @@ public class UsingActivity extends AppCompatActivity implements View.OnTouchList
         // Set touch listener to show "+" button
         TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
         layoutDate.setOnTouchListener(swdl);
-        //dateView.setOnTouchListener(swdl);
 
         // Set touch listener to hide "+" button
         findViewById(R.id.scrollLayout).setOnTouchListener(this);

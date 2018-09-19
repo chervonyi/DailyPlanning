@@ -14,14 +14,11 @@ import com.general.dailyplanning.activities.UsingActivity;
 
 public class TouchSwipeDateListener implements View.OnTouchListener {
     private int posX = 0;
-    private String TAG = "testing";
     private static boolean isHidden = true;
+    private boolean swiped = false;
 
     private RelativeLayout relativeLayout;
     private FrameLayout.LayoutParams layoutParams;
-
-    private final int LONG_PRESS_TIMEOUT = 500;
-    private final int MAX_RADIUS_OF_TOUCH = 50;
 
     private final int SWIPED_POS = -720;
     private final int USUAL_POS = 0;
@@ -35,34 +32,9 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
     private TranslateAnimation anim;
 
     public TouchSwipeDateListener(UsingActivity usingActivity, Button buttonAdd) {
-        posX = -1;
         this.usingActivity = usingActivity;
         this.buttonAdd = buttonAdd;
     }
-
-    /*
-    @Override
-    public boolean onTouch(View view, MotionEvent event) {
-        if (buttonAdd.getVisibility() == View.INVISIBLE) {
-            buttonAdd.setVisibility(View.VISIBLE);
-
-            Animation anim = new ScaleAnimation(q2
-                    0, 1f, // Start and end values for the X axis scaling
-                    0, 1, // Start and end values for the Y axis scaling
-                    Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
-                    Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
-            anim.setFillAfter(false); // Needed to keep the result of the animation
-            anim.setDuration(200);
-            buttonAdd.startAnimation(anim);
-
-
-            isHidden = false;
-        }
-        return true;
-    }
-
-    */
-
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
@@ -73,11 +45,13 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                // On touch get horizontal pos and absPos
+                swiped = false;
                 downRawX = (int) event.getRawX();
                 break;
 
             case MotionEvent.ACTION_MOVE:
+                hide();
+
                 // Get current position
                 currX = (int) event.getRawX();
 
@@ -85,13 +59,37 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                 actualDelta = currX - downRawX;
 
                 if (currPosition == USUAL_POS && actualDelta < -SWIPE_BORDER) {
-                    currPosition = SWIPED_POS;
                     alignTo(SWIPED_POS);
 
                 } else if(currPosition == SWIPED_POS && actualDelta > SWIPE_BORDER) {
-                    currPosition = USUAL_POS;
                     alignTo(USUAL_POS);
                 }
+                break;
+
+            case MotionEvent.ACTION_UP:
+                if (!swiped) {
+                    if (currPosition == USUAL_POS) {
+                        // Show "+" button
+                        if (buttonAdd.getVisibility() == View.INVISIBLE) {
+                            buttonAdd.setVisibility(View.VISIBLE);
+
+                            Animation anim = new ScaleAnimation(
+                                    0, 1f, // Start and end values for the X axis scaling
+                                    0, 1, // Start and end values for the Y axis scaling
+                                    Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                                    Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
+                            anim.setFillAfter(false); // Needed to keep the result of the animation
+                            anim.setDuration(200);
+                            buttonAdd.startAnimation(anim);
+
+
+                            isHidden = false;
+                        }
+                    } else {
+                        // Go to CreatingActivity with some flags that this Activity should create task in "Tomorrow TO-DO List"
+                    }
+                }
+
                 break;
         }
 
@@ -103,6 +101,7 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
         currPosition = side;
         layoutParams.leftMargin = side;
         relativeLayout.setLayoutParams(layoutParams);
+        swiped = true;
 
         if (side == USUAL_POS) {
             anim = new TranslateAnimation(SWIPED_POS, 0, 0, 0);
@@ -130,8 +129,4 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
            buttonAdd.setVisibility(View.INVISIBLE);
        }
     }
-
-
-
-
 }
