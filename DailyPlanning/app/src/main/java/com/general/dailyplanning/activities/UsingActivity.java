@@ -58,11 +58,7 @@ public class UsingActivity extends AppCompatActivity implements View.OnTouchList
 
         updateTasksList();
     }
-
-    // TODO-LIST:
-    // [ ] Make vibrate method - static in own class Vibrate.java
-    // [ ] In MainActivity show "+" button only on ACTION_UP
-
+    
     private void updateTasksList() {
         LinearLayout scrollLayout = findViewById(R.id.scrollLayout);
         if (scrollLayout.getChildCount() > 0) {
@@ -101,16 +97,7 @@ public class UsingActivity extends AppCompatActivity implements View.OnTouchList
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         TouchSwipeDateListener.hide();
+        TouchSwipeDateListener.swipeBack();
         return false;
-    }
-
-    public void vibrate(long milliSeconds) {
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(milliSeconds,VibrationEffect.DEFAULT_AMPLITUDE));
-        }else{
-            v.vibrate(milliSeconds);
-        }
     }
 }

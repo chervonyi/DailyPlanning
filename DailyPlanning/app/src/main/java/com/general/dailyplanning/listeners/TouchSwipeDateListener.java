@@ -1,5 +1,6 @@
 package com.general.dailyplanning.listeners;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,26 +11,28 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import com.general.dailyplanning.activities.CreatingActivity;
 import com.general.dailyplanning.activities.UsingActivity;
+import com.general.dailyplanning.components.Vibrate;
 
 public class TouchSwipeDateListener implements View.OnTouchListener {
     private int posX = 0;
     private static boolean isHidden = true;
-    private boolean swiped = false;
+    private static boolean swiped = false;
 
-    private RelativeLayout relativeLayout;
-    private FrameLayout.LayoutParams layoutParams;
+    private static RelativeLayout relativeLayout;
+    private static FrameLayout.LayoutParams layoutParams;
 
-    private final int SWIPED_POS = -720;
-    private final int USUAL_POS = 0;
-    private final int SWIPE_BORDER = 200;
+    private static final int SWIPED_POS = -720;
+    private static final int USUAL_POS = 0;
+    private  final int SWIPE_BORDER = 200;
 
-    private int currPosition = USUAL_POS;
+    private static int currPosition = USUAL_POS;
     private int downRawX;
 
     public UsingActivity usingActivity;
     private static Button buttonAdd;
-    private TranslateAnimation anim;
+    private static TranslateAnimation anim;
 
     public TouchSwipeDateListener(UsingActivity usingActivity, Button buttonAdd) {
         this.usingActivity = usingActivity;
@@ -87,17 +90,18 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                         }
                     } else {
                         // Go to CreatingActivity with some flags that this Activity should create task in "Tomorrow TO-DO List"
+                        Intent intent = new Intent(usingActivity, CreatingActivity.class);
+                        // TODO Put some extra
+                        usingActivity.startActivity(intent);
                     }
                 }
 
                 break;
         }
-
         return true;
     }
 
-
-    private void alignTo(int side) {
+    private static void alignTo(int side) {
         currPosition = side;
         layoutParams.leftMargin = side;
         relativeLayout.setLayoutParams(layoutParams);
@@ -128,5 +132,11 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
 
            buttonAdd.setVisibility(View.INVISIBLE);
        }
+    }
+
+    public static void swipeBack() {
+        if (currPosition == SWIPED_POS) {
+            alignTo(USUAL_POS);
+        }
     }
 }
