@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:width="30dp" android:height="30dp">
+        <shape>
+            <corners android:radius="30dp" />
+            <solid android:color="#ff0004"/>
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_delete" android:width="20dp" android:height="20dp"
+        android:left="5dp"
+        android:top="5dp"
+        android:right="5dp"
+        android:bottom="5dp"/>
+</layer-list>

@@ -21,7 +21,7 @@ import com.general.dailyplanning.R;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
-import com.general.dailyplanning.listeners.SwipeListener;
+import com.general.dailyplanning.listeners.SwipeDownDateListener;
 import com.general.dailyplanning.listeners.TouchDateListener;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         TextView dateView = findViewById(R.id.textViewDate);
 
         // Set swipe listener for Task Bar
-        SwipeListener swipeListener = new SwipeListener(this);
+        SwipeDownDateListener swipeListener = new SwipeDownDateListener(this);
         taskView.setOnTouchListener(swipeListener);
 
         // Set touch listener to show "+" button

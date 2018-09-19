@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.general.dailyplanning.activities.MainActivity;
 
-public class SwipeListener implements OnTouchListener {
+public class SwipeDownDateListener implements OnTouchListener {
     private final int USUAL_POS = 0;
     private final int SWIPED_POS = 1;
 
@@ -27,7 +27,7 @@ public class SwipeListener implements OnTouchListener {
 
     public MainActivity mainActivity;
 
-    public SwipeListener(MainActivity mainActivity) {
+    public SwipeDownDateListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
@@ -72,9 +72,6 @@ public class SwipeListener implements OnTouchListener {
                     } else if (currPosition == SWIPED_POS && layoutParams.topMargin < SWIPE_LINE_2) {
                         translateTo(USUAL_POS, -HEIGHT_HIDDEN_PANEL, HEIGHT_HIDDEN_PANEL + SWIPE_LINE_2, 200);
                     }
-
-                    Log.d("testing", "deltaY: " + deltaY);
-                    Log.d("testing", "actualDelta: " + actualDelta);
                 }
 
                 break;
