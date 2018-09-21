@@ -46,9 +46,8 @@
 
             </RelativeLayout>
 
-
-
             <ScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="70dp"
@@ -79,6 +78,8 @@
                 tools:layout_editor_absoluteX="155dp" />
 
         </FrameLayout>
+
+
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

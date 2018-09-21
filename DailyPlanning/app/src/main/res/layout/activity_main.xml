@@ -160,7 +160,7 @@
 
 
 
-
+<!--add white border 1px-->
     <!--<TextView-->
     <!--android:id="@+id/textViewNumTasks"-->
     <!--android:layout_width="20dp"-->
