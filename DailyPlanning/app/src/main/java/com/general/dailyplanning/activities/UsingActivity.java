@@ -64,10 +64,9 @@ public class UsingActivity extends AppCompatActivity {
         });
 
         // TODO-LIST:
-        // [X] Post on GitHub about fixing bug
-        // [X] Post on GitHub about a new bug - Swiping on LEFT textViewDate show "+" button
-        // [X] Try to fix a new bug
-        // [ ] Add EditButton on updateTasksList()
+        // [X] Add EditButton on updateTasksList()
+        // [ ] Add onClick methods for buttons: delete_button & edit_button
+        // [ ] Post on GutHub issue about opened more than one task block
         // [ ] Move to create a method onClick for "Remind tomorrow" (Put extra for adding into another TaskList)
 
         // Set touch listener to show "+" button
@@ -93,12 +92,11 @@ public class UsingActivity extends AppCompatActivity {
         }
 
 
-        TextView view = null;
-        LinearLayout innerLayout = null;
-        LinearLayout optionalButtons = null;
+        TextView view;
+        LinearLayout innerLayout;
         MovingTaskListener movingTaskListener;
-        Button buttonDelete = null;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Button buttonDelete, buttonEdit;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, 100);
         params.setMargins(0,10,0,0);
 
         for (Task task: tasks) {
@@ -122,12 +120,15 @@ public class UsingActivity extends AppCompatActivity {
             innerLayout.setOrientation(LinearLayout.HORIZONTAL);
             innerLayout.addView(view);
 
+            buttonEdit = new Button(this);
+            buttonEdit.setLayoutParams(params);
+            buttonEdit.setBackground(getResources().getDrawable(R.drawable.button_edit));
+            innerLayout.addView(buttonEdit);
+
             buttonDelete = new Button(this);
             buttonDelete.setLayoutParams(params);
             buttonDelete.setBackground(getResources().getDrawable(R.drawable.button_delete));
-
             innerLayout.addView(buttonDelete);
-            // here create edit button
 
             scrollLayout.addView(innerLayout);
         }
@@ -138,13 +139,4 @@ public class UsingActivity extends AppCompatActivity {
         startActivity(intent);
         TouchSwipeDateListener.hide();
     }
-
-    /*
-    @Override
-    public boolean dispatchTouchEvent(final MotionEvent motionEvent) {
-        // Hide "+" button
-        TouchSwipeDateListener.hide();
-        return super.dispatchTouchEvent(motionEvent);
-    }
-    */
 }
