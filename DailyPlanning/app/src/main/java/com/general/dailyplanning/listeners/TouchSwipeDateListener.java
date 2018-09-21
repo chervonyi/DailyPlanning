@@ -2,6 +2,7 @@ package com.general.dailyplanning.listeners;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -53,17 +54,20 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                hide();
-
                 // Get current position
                 currX = (int) event.getRawX();
 
                 // Get length of move
                 actualDelta = currX - downRawX;
 
+                // Check if touch indeed is moving
+                if (Math.abs(actualDelta) > 30) {
+                    hide();
+                    swiped = true;
+                }
+
                 if (currPosition == USUAL_POS && actualDelta < -SWIPE_BORDER) {
                     alignTo(SWIPED_POS);
-
                 } else if(currPosition == SWIPED_POS && actualDelta > SWIPE_BORDER) {
                     alignTo(USUAL_POS);
                 }
@@ -84,7 +88,6 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                             anim.setFillAfter(false); // Needed to keep the result of the animation
                             anim.setDuration(200);
                             buttonAdd.startAnimation(anim);
-
 
                             isHidden = false;
                         }
@@ -132,11 +135,5 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
 
            buttonAdd.setVisibility(View.INVISIBLE);
        }
-    }
-
-    public static void swipeBack() {
-        if (currPosition == SWIPED_POS) {
-            alignTo(USUAL_POS);
-        }
     }
 }

@@ -66,11 +66,11 @@ public class UsingActivity extends AppCompatActivity {
         });
 
         // TODO-LIST:
-        // [ ] Post on GitHub about fixing bug
-        // [ ] Post on GitHub about a new bug - Swiping on LEFT textViewDate show "+" button
+        // [X] Post on GitHub about fixing bug
+        // [X] Post on GitHub about a new bug - Swiping on LEFT textViewDate show "+" button
         // [ ] Try to fix a new bug
         // [ ] Add EditButton on updateTasksList()
-        // [ ] Move to create a method onClick for "Remind tomorrow"
+        // [ ] Move to create a method onClick for "Remind tomorrow" (Put extra for adding into another TaskList)
 
         // Set touch listener to show "+" button
         TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
