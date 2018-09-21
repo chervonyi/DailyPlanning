@@ -50,6 +50,9 @@ public class MovingTaskListener implements OnTouchListener {
         int actualDeltaX;
         TranslateAnimation anim;
 
+        // Hide "+" button
+        TouchSwipeDateListener.hide();
+
         linearLayout = (LinearLayout) view.getParent();
         layoutParams = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
 

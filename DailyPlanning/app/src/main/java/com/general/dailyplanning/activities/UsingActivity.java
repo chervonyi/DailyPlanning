@@ -59,8 +59,6 @@ public class UsingActivity extends AppCompatActivity {
                 for (MovingTaskListener listener: listeners) {
                     listener.stopPost();
                 }
-                // Hide "+" button
-                TouchSwipeDateListener.hide();
                 return false;
             }
         });
@@ -68,7 +66,7 @@ public class UsingActivity extends AppCompatActivity {
         // TODO-LIST:
         // [X] Post on GitHub about fixing bug
         // [X] Post on GitHub about a new bug - Swiping on LEFT textViewDate show "+" button
-        // [ ] Try to fix a new bug
+        // [X] Try to fix a new bug
         // [ ] Add EditButton on updateTasksList()
         // [ ] Move to create a method onClick for "Remind tomorrow" (Put extra for adding into another TaskList)
 
@@ -93,6 +91,7 @@ public class UsingActivity extends AppCompatActivity {
         if (scrollLayout.getChildCount() > 0) {
             scrollLayout.removeAllViews();
         }
+
 
         TextView view = null;
         LinearLayout innerLayout = null;
@@ -139,4 +138,13 @@ public class UsingActivity extends AppCompatActivity {
         startActivity(intent);
         TouchSwipeDateListener.hide();
     }
+
+    /*
+    @Override
+    public boolean dispatchTouchEvent(final MotionEvent motionEvent) {
+        // Hide "+" button
+        TouchSwipeDateListener.hide();
+        return super.dispatchTouchEvent(motionEvent);
+    }
+    */
 }

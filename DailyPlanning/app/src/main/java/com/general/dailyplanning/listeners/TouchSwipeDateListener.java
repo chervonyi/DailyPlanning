@@ -42,6 +42,7 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+
         int currX, actualDelta;
 
         relativeLayout = (RelativeLayout) view;
@@ -90,8 +91,10 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                             buttonAdd.startAnimation(anim);
 
                             isHidden = false;
+                        } else {
+                            hide();
                         }
-                    } else {
+                    } else  {
                         // Go to CreatingActivity with some flags that this Activity should create task in "Tomorrow TO-DO List"
                         Intent intent = new Intent(usingActivity, CreatingActivity.class);
                         // TODO Put some extra
@@ -132,7 +135,6 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
            anim.setFillAfter(false); // Needed to keep the result of the animation
            anim.setDuration(200);
            buttonAdd.startAnimation(anim);
-
            buttonAdd.setVisibility(View.INVISIBLE);
        }
     }
