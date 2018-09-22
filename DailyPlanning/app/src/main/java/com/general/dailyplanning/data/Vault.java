@@ -53,4 +53,12 @@ public class Vault implements Serializable{
     public ArrayList<Task> getArray() {
         return array;
     }
+
+    public void remove(int id) {
+        array.remove(id);
+    }
+
+    public Task get(int id) {
+        return array.get(id);
+    }
 }

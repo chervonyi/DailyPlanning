@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.general.dailyplanning.R;
 import com.general.dailyplanning.activities.CreatingActivity;
@@ -37,7 +38,6 @@ import java.util.ArrayList;
 
 public class UsingActivity extends AppCompatActivity {
 
-    private boolean isScrolling = false;
     private ArrayList<MovingTaskListener> listeners = new ArrayList<>();
 
     private ArrayList<Task> tasks = new ArrayList<>();
@@ -64,10 +64,8 @@ public class UsingActivity extends AppCompatActivity {
         });
 
         // TODO-LIST:
-        // [X] Add EditButton on updateTasksList()
-        // [ ] Add onClick methods for buttons: delete_button & edit_button
+        // [ ] Finish both methods
         // [ ] Post on GutHub issue about opened more than one task block
-        // [ ] Move to create a method onClick for "Remind tomorrow" (Put extra for adding into another TaskList)
 
         // Set touch listener to show "+" button
         TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
@@ -91,7 +89,7 @@ public class UsingActivity extends AppCompatActivity {
             scrollLayout.removeAllViews();
         }
 
-
+        final Context context = this;
         TextView view;
         LinearLayout innerLayout;
         MovingTaskListener movingTaskListener;
@@ -99,6 +97,7 @@ public class UsingActivity extends AppCompatActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, 100);
         params.setMargins(0,10,0,0);
 
+        int id = 0;
         for (Task task: tasks) {
             view = new TextView(this);
             view.setText(task.toString());
@@ -118,16 +117,53 @@ public class UsingActivity extends AppCompatActivity {
 
             innerLayout = new LinearLayout(this);
             innerLayout.setOrientation(LinearLayout.HORIZONTAL);
+            innerLayout.setTag("task_" + id++);
             innerLayout.addView(view);
 
             buttonEdit = new Button(this);
             buttonEdit.setLayoutParams(params);
             buttonEdit.setBackground(getResources().getDrawable(R.drawable.button_edit));
+            buttonEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout linearLayout = (LinearLayout) v.getParent();
+                    int idTask = Integer.parseInt(linearLayout.getTag().toString().substring(5));
+                    Vault vault = Vault.getInstance();
+
+                    // Remove element
+                    Task selectedTask = vault.get(idTask);
+
+                    // Go to CreatingActivity with some flags that this Activity should create task in "Tomorrow TO-DO List"
+                    Intent intent = new Intent(context, CreatingActivity.class);
+                    // TODO Put 'selectedTask' and other in extra and then start new activity
+                    context.startActivity(intent);
+                    // TODO After saving current task in CreatingActivity before move back to UsingActivity must be Vault.update(id, Task); and then DataManipulator.saving(context, "data", vault);
+                }
+            });
             innerLayout.addView(buttonEdit);
+
 
             buttonDelete = new Button(this);
             buttonDelete.setLayoutParams(params);
             buttonDelete.setBackground(getResources().getDrawable(R.drawable.button_delete));
+            buttonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout linearLayout = (LinearLayout) v.getParent();
+                    // Get id from Tag. E-g: task_12 => id = 12
+                    int idTask = Integer.parseInt(linearLayout.getTag().toString().substring(5));
+                    Vault vault = Vault.getInstance();
+
+                    // Remove element
+                    vault.remove(idTask);
+
+                    // Save vault
+                    DataManipulator.saving(context, "data", vault);
+
+                    updateTasksList();
+                    // +- Add anim
+                }
+            });
             innerLayout.addView(buttonDelete);
 
             scrollLayout.addView(innerLayout);

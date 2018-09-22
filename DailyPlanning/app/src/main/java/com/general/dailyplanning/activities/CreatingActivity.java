@@ -28,6 +28,12 @@ import java.util.Calendar;
 
 public class CreatingActivity extends AppCompatActivity {
 
+    // Constants
+    public final static int CREATING_NEW = 0x0000001;
+    public final static int EDITING = 0x0000002;
+    public final static int CREATING_NEW_TOMORROW = 0x0000003;
+
+
     private EditText newTask;
     private Button buttonSelectTime;
 
@@ -93,13 +99,13 @@ public class CreatingActivity extends AppCompatActivity {
     }
 
     public void onClickSave(View view) {
-        String titleOfask = newTask.getText().toString();
+        String titleOfTask = newTask.getText().toString();
 
         // Get current state of Vault
         Vault vault = Vault.getInstance();
 
         // Update vault
-        vault.add(new Task(titleOfask));
+        vault.add(new Task(titleOfTask));
 
         // Save vault
         // TODO: Move Vault's saving into onClose() method
