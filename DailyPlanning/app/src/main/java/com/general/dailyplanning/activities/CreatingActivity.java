@@ -31,12 +31,16 @@ public class CreatingActivity extends AppCompatActivity {
     // Constants
     public final static int CREATING_NEW = 0x0000001;
     public final static int EDITING = 0x0000002;
-    public final static int CREATING_NEW_TOMORROW = 0x0000003;
+    public final static int CREATING_NEW_ON_TOMORROW = 0x0000003;
 
-
+    // Views
     private EditText newTask;
     private Button buttonSelectTime;
+    
+    // Extras
+    private int type;
 
+    // States
     private boolean timeSelected = false;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -48,6 +52,27 @@ public class CreatingActivity extends AppCompatActivity {
         newTask = findViewById(R.id.editNewTaskTitle);
         buttonSelectTime = findViewById(R.id.buttonSelectTime);
 
+        Intent intent = getIntent();
+
+        type = intent.getIntExtra("type", -1);
+
+        // Get extras for different activities purpose
+        switch (type) {
+            case CREATING_NEW:
+                break;
+
+            case EDITING:
+                timeSelected = true;
+                buttonSelectTime.setVisibility(View.VISIBLE);
+                newTask.setText(intent.getStringExtra("task"));
+                break;
+
+            case CREATING_NEW_ON_TOMORROW:
+                break;
+
+        }
+
+        // Hide SelectTime button while task have not been entered
         newTask.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -69,9 +94,11 @@ public class CreatingActivity extends AppCompatActivity {
     }
 
     public void onClickSelectTime(View view) {
+        // Default position of time picker
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
+
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -93,7 +120,7 @@ public class CreatingActivity extends AppCompatActivity {
                 newTask.setText(tmp);
 
             }
-        }, hour, minute, true);//Yes 24 hour time
+        }, hour, minute, true);
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
     }
@@ -104,16 +131,22 @@ public class CreatingActivity extends AppCompatActivity {
         // Get current state of Vault
         Vault vault = Vault.getInstance();
 
-        // Update vault
-        vault.add(new Task(titleOfTask));
+        switch (type) {
+            case CREATING_NEW:
+            case EDITING:
+                vault.add(new Task(titleOfTask));
+                break;
+
+            case CREATING_NEW_ON_TOMORROW:
+                break;
+        }
 
         // Save vault
         // TODO: Move Vault's saving into onClose() method
         DataManipulator.saving(this, "data", vault);
 
-        // Go back to planning screen
-        // TODO: Maybe should replace MainActivity on UsingActivity, because after creating at least one task, app should show UsingActivity
-        Intent intent = new Intent(this, MainActivity.class);
+        //Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, UsingActivity.class);
         startActivity(intent);
     }
 }

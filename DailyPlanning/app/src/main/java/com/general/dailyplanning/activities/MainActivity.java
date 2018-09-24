@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     public void onClickAddNewTask (View view) {
         Intent intent = new Intent(this, CreatingActivity.class);
+        intent.putExtra("type", CreatingActivity.CREATING_NEW);
         startActivity(intent);
         TouchDateListener.hide();
     }

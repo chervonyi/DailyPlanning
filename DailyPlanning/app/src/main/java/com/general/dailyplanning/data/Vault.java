@@ -22,6 +22,7 @@ public class Vault implements Serializable{
         array = new ArrayList<>();
     }
 
+    // Add at appropriate position in task's arrayList
     public void add(Task newTask) {
         boolean added = false;
         int h = newTask.getHours();
@@ -46,6 +47,8 @@ public class Vault implements Serializable{
         }
     }
 
+
+
     private int makeNum (int h, int m) {
         return h * 100 + m;
     }
@@ -59,6 +62,8 @@ public class Vault implements Serializable{
     }
 
     public Task get(int id) {
-        return array.get(id);
+        Task task = array.get(id);
+        array.remove(id);
+        return task;
     }
 }

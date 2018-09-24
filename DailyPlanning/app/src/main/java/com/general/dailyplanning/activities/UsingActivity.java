@@ -63,10 +63,6 @@ public class UsingActivity extends AppCompatActivity {
             }
         });
 
-        // TODO-LIST:
-        // [ ] Finish both methods
-        // [ ] Post on GutHub issue about opened more than one task block
-
         // Set touch listener to show "+" button
         TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
         layoutDate.setOnTouchListener(swdl);
@@ -130,14 +126,15 @@ public class UsingActivity extends AppCompatActivity {
                     int idTask = Integer.parseInt(linearLayout.getTag().toString().substring(5));
                     Vault vault = Vault.getInstance();
 
-                    // Remove element
                     Task selectedTask = vault.get(idTask);
 
                     // Go to CreatingActivity with some flags that this Activity should create task in "Tomorrow TO-DO List"
                     Intent intent = new Intent(context, CreatingActivity.class);
-                    // TODO Put 'selectedTask' and other in extra and then start new activity
+
+                    intent.putExtra("type", CreatingActivity.EDITING);
+                    intent.putExtra("task", selectedTask.toString());
+
                     context.startActivity(intent);
-                    // TODO After saving current task in CreatingActivity before move back to UsingActivity must be Vault.update(id, Task); and then DataManipulator.saving(context, "data", vault);
                 }
             });
             innerLayout.addView(buttonEdit);
@@ -172,6 +169,7 @@ public class UsingActivity extends AppCompatActivity {
 
     public void onClickAddNewTask(View view) {
         Intent intent = new Intent(this, CreatingActivity.class);
+        intent.putExtra("type", CreatingActivity.CREATING_NEW);
         startActivity(intent);
         TouchSwipeDateListener.hide();
     }
