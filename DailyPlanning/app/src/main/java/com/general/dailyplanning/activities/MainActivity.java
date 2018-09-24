@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,12 +22,14 @@ import com.general.dailyplanning.R;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
+import com.general.dailyplanning.listeners.MovingTaskListener;
 import com.general.dailyplanning.listeners.SwipeDownDateListener;
 import com.general.dailyplanning.listeners.TouchDateListener;
+import com.general.dailyplanning.listeners.TouchSwipeDateListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
+public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Task> tasks = new ArrayList<>();
 
@@ -48,7 +51,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         dateView.setOnTouchListener(touchDateListener);
 
         // Set touch listener to hide "+" button
-        findViewById(R.id.scrollLayout).setOnTouchListener(this);
+        findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Hide "+" button
+                TouchDateListener.hide();
+                return true;
+            }
+        });
 
         // Loading data
         Vault vault = DataManipulator.loading(this, "data");
@@ -86,18 +96,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
 
-    // Touch listener to hide "+" button
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        TouchDateListener.hide();
-        return true;
-    }
-
     public void onClickAddNewTask (View view) {
         Intent intent = new Intent(this, CreatingActivity.class);
         intent.putExtra("type", CreatingActivity.CREATING_NEW);
         startActivity(intent);
-        TouchDateListener.hide();
+        //TouchDateListener.hide();
     }
 
     public void onClickSave(View view) {
@@ -114,12 +117,5 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }else{
             v.vibrate(milliSeconds);
         }
-    }
-
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        TouchDateListener.hide();
-        return false;
     }
 }

@@ -78,7 +78,7 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                 if (!swiped) {
                     if (currPosition == USUAL_POS) {
                         // Show "+" button
-                        if (buttonAdd.getVisibility() == View.INVISIBLE) {
+                        if (isHidden) {
                             buttonAdd.setVisibility(View.VISIBLE);
 
                             Animation anim = new ScaleAnimation(
@@ -87,7 +87,7 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                                     Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
                                     Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
                             anim.setFillAfter(false); // Needed to keep the result of the animation
-                            anim.setDuration(200);
+                            anim.setDuration(300);
                             buttonAdd.startAnimation(anim);
 
                             isHidden = false;
@@ -133,7 +133,7 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                    Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
                    Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
            anim.setFillAfter(false); // Needed to keep the result of the animation
-           anim.setDuration(200);
+           anim.setDuration(300);
            buttonAdd.startAnimation(anim);
            buttonAdd.setVisibility(View.INVISIBLE);
        }

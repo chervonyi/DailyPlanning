@@ -55,11 +55,13 @@ public class UsingActivity extends AppCompatActivity {
         scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // if == MotionEvent.ACTION_MOVE) ??
+                // Hide "+" button
+                TouchSwipeDateListener.hide();
+
                 for (MovingTaskListener listener: listeners) {
                     listener.stopPost();
                 }
-                return false;
+                return true;
             }
         });
 
@@ -76,7 +78,6 @@ public class UsingActivity extends AppCompatActivity {
 
         updateTasksList();
     }
-
 
     @SuppressLint("ClickableViewAccessibility")
     private void updateTasksList() {
@@ -173,4 +174,17 @@ public class UsingActivity extends AppCompatActivity {
         startActivity(intent);
         TouchSwipeDateListener.hide();
     }
+
+    /*
+    @Override
+    public boolean dispatchTouchEvent(final MotionEvent motionEvent) {
+        // Hide "+" button
+        if(TouchSwipeDateListener.hide())
+            return true;
+        //findViewById(R.id.textViewDate).setEnabled(false);
+        return super.dispatchTouchEvent(motionEvent);
+        //return true;
+    }
+    */
+
 }

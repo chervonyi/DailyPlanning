@@ -36,7 +36,7 @@ public class CreatingActivity extends AppCompatActivity {
     // Views
     private EditText newTask;
     private Button buttonSelectTime;
-    
+
     // Extras
     private int type;
 

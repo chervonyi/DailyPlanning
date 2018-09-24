@@ -9,13 +9,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <FrameLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
 
             <RelativeLayout
                 android:id="@+id/layoutDate"
@@ -36,13 +36,13 @@
                     android:id="@+id/buttonRemind"
                     android:layout_width="360dp"
                     android:layout_height="50dp"
+                    android:layout_toEndOf="@id/textViewDate"
                     android:background="@drawable/button_orange"
-                    android:gravity="center_vertical|center"
                     android:fontFamily="@font/sansation"
-                    android:textColor="@color/fontWhite"
+                    android:gravity="center_vertical|center"
                     android:text="@string/remind_tomorrow"
-                    android:textSize="18sp"
-                    android:layout_toEndOf="@id/textViewDate"/>
+                    android:textColor="@color/fontWhite"
+                    android:textSize="18sp" />
 
             </RelativeLayout>
 
@@ -57,8 +57,7 @@
                     android:id="@+id/scrollLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                </LinearLayout>
+                    android:orientation="vertical"/>
             </ScrollView>
 
             <Button
@@ -78,7 +77,6 @@
                 tools:layout_editor_absoluteX="155dp" />
 
         </FrameLayout>
-
 
 
     </LinearLayout>

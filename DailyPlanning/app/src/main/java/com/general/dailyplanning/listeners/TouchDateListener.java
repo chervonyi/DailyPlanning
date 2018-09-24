@@ -26,19 +26,23 @@ public class TouchDateListener implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        if (buttonAdd.getVisibility() == View.INVISIBLE) {
-            buttonAdd.setVisibility(View.VISIBLE);
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (buttonAdd.getVisibility() == View.INVISIBLE) {
+                buttonAdd.setVisibility(View.VISIBLE);
 
-            Animation anim = new ScaleAnimation(
-                    0, 1f, // Start and end values for the X axis scaling
-                    0, 1, // Start and end values for the Y axis scaling
-                    Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
-                    Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
-            anim.setFillAfter(false); // Needed to keep the result of the animation
-            anim.setDuration(200);
-            buttonAdd.startAnimation(anim);
+                Animation anim = new ScaleAnimation(
+                        0, 1f, // Start and end values for the X axis scaling
+                        0, 1, // Start and end values for the Y axis scaling
+                        Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                        Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
+                anim.setFillAfter(false); // Needed to keep the result of the animation
+                anim.setDuration(300);
+                buttonAdd.startAnimation(anim);
 
-            isHidden = false;
+                isHidden = false;
+            } else {
+                hide();
+            }
         }
         return true;
     }
@@ -52,7 +56,7 @@ public class TouchDateListener implements View.OnTouchListener {
                    Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
                    Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
            anim.setFillAfter(false); // Needed to keep the result of the animation
-           anim.setDuration(200);
+           anim.setDuration(300);
            buttonAdd.startAnimation(anim);
 
            buttonAdd.setVisibility(View.INVISIBLE);
