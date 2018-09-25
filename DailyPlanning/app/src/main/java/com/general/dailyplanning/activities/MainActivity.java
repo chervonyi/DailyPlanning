@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.general.dailyplanning.R;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
@@ -24,6 +26,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Task> tasks = new ArrayList<>();
+    private ArrayList<String> toDoList = new ArrayList<>();
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         if (vault != null) {
             Vault.setInstance(vault);
             tasks = vault.getArray();
+            toDoList = vault.getTomorrowArray();
         }
 
         // Filling up ScrollView with tasks
@@ -60,13 +65,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    /**
+     * Fills up the body of ScrollView with task blocks
+     */
     private void updateTasksList() {
         LinearLayout scrollLayout = findViewById(R.id.scrollLayout);
         if (scrollLayout.getChildCount() > 0) {
             scrollLayout.removeAllViews();
         }
 
-        TextView view = null;
+        TextView view;
 
         for (Task task: tasks) {
             view = new TextView(this);
@@ -95,5 +104,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, UsingActivity.class);
         startActivity(intent);
         // TODO Hide this button
+        // TODO CLEAR TOMORROW_ARRAY IN VAULT
     }
 }

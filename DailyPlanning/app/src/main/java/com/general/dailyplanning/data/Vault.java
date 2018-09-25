@@ -10,8 +10,12 @@ public class Vault implements Serializable {
     // Task-List
     private ArrayList<Task> array;
 
+    // TO-DO List on tomorrow
+    private ArrayList<String> tomorrowArray;
+
     private Vault() {
         array = new ArrayList<>();
+        tomorrowArray = new ArrayList<>();
     }
 
     /**
@@ -75,18 +79,30 @@ public class Vault implements Serializable {
         return task;
     }
 
+    /**
+     * Adds a new task to TO-DO list on tomorrow
+     * @param newTask
+     */
+    public void addTomorrow(String newTask) {
+        tomorrowArray.add(newTask);
+    }
+
     // Setter
     // Self made modification of Singleton which allows update unique instance from phone's file
     public static void setInstance(Vault vault) {
         instance = vault;
     }
 
-    // Getter
+    // Getters:
     public ArrayList<Task> getArray() {
         return array;
     }
 
-    // Getter
+    public ArrayList<String> getTomorrowArray() {
+        return tomorrowArray;
+    }
+
+
     public static Vault getInstance() {
         return instance;
     }

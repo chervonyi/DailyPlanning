@@ -36,6 +36,7 @@
                     android:textColor="@color/fontWhite"
                     android:textSize="11pt" />
 
+
                 <TextView
                     android:id="@+id/textViewNothing"
                     android:layout_width="match_parent"
@@ -45,7 +46,8 @@
                     android:gravity="center_vertical|center"
                     android:text="@string/nothing"
                     android:textColor="@color/fontWhite"
-                    android:textSize="8pt" />
+                    android:textSize="8pt"
+                    android:visibility="invisible"/>
             </LinearLayout>
 
             <TextView

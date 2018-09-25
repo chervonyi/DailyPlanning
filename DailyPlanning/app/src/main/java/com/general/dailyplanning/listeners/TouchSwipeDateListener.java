@@ -99,7 +99,7 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                     } else  {
                         // Click on "Remind tomorrow" button
                         Intent intent = new Intent(usingActivity, CreatingActivity.class);
-                        // TODO Put some extra (CreatingActivity.CREATING_NEW_ON_TOMORROW)
+                        intent.putExtra("type", CreatingActivity.CREATING_NEW_ON_TOMORROW);
                         usingActivity.startActivity(intent);
                     }
                 }

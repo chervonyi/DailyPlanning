@@ -59,6 +59,8 @@ public class CreatingActivity extends AppCompatActivity {
                 break;
 
             case CREATING_NEW_ON_TOMORROW:
+                Button btn = findViewById(R.id.buttonSave);
+                btn.setText("REMIND TOMORROW");
                 break;
 
         }
@@ -75,7 +77,7 @@ public class CreatingActivity extends AppCompatActivity {
                         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     }
 
-                    if (newTask.getText().length() > 0) {
+                    if (newTask.getText().length() > 0 && type != CreatingActivity.CREATING_NEW_ON_TOMORROW) {
                         buttonSelectTime.setVisibility(View.VISIBLE);
                     } else {
                         buttonSelectTime.setVisibility(View.INVISIBLE);
@@ -140,6 +142,7 @@ public class CreatingActivity extends AppCompatActivity {
                 break;
 
             case CREATING_NEW_ON_TOMORROW:
+                vault.addTomorrow(titleOfTask);
                 break;
         }
 
