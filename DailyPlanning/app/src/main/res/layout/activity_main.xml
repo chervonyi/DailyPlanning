@@ -36,6 +36,20 @@
                     android:textColor="@color/fontWhite"
                     android:textSize="11pt" />
 
+                <ScrollView
+                    android:id="@+id/scrollViewToDoList"
+                    android:layout_width="match_parent"
+                    android:layout_height="472dp"
+                    android:layout_marginTop="70dp"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:id="@+id/toDoLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    </LinearLayout>
+                </ScrollView>
 
                 <TextView
                     android:id="@+id/textViewNothing"

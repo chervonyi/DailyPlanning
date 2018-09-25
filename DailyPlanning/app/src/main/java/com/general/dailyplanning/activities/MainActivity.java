@@ -60,10 +60,40 @@ public class MainActivity extends AppCompatActivity {
             toDoList = vault.getTomorrowArray();
         }
 
+        // Filling up TO-DO List
+        updateToDoList();
+
         // Filling up ScrollView with tasks
         updateTasksList();
     }
 
+
+    /**
+     * Fills up TO-DO list with tasks
+     */
+    private void updateToDoList() {
+        LinearLayout toDoLayout = findViewById(R.id.toDoLayout);
+        if (toDoLayout.getChildCount() > 0) {
+            toDoLayout.removeAllViews();
+        }
+        toDoLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.todo_list_stroke));
+
+        TextView view;
+
+        for (String task: toDoList) {
+            view = new TextView(this);
+            view.setText(task);
+            view.setBackgroundColor(getResources().getColor(R.color.backgroundGrey));
+            view.setTextSize(18);
+            view.setHeight(150);
+            view.setTextColor(getResources().getColor(R.color.fontWhite));
+            view.setBackground(ContextCompat.getDrawable(this, R.drawable.todo_task));
+            view.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER);
+            //view.setPadding(0, 10, 0, 10);
+            view.setTypeface(ResourcesCompat.getFont(this, R.font.light));
+            toDoLayout.addView(view);
+        }
+    }
 
 
     /**
