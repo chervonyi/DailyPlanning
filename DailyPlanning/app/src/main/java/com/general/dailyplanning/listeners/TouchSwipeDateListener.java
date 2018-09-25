@@ -45,6 +45,7 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
 
         int currX, actualDelta;
 
+        usingActivity.hideAllTasks();
         relativeLayout = (RelativeLayout) view;
         layoutParams = (FrameLayout.LayoutParams) relativeLayout.getLayoutParams();
 

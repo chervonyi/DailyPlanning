@@ -1,13 +1,10 @@
 package com.general.dailyplanning.listeners;
 
-import android.graphics.Rect;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.general.dailyplanning.activities.UsingActivity;
@@ -67,6 +64,7 @@ public class MovingTaskListener implements OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_MOVE:
+
                 toReturn = true;
                 // Get current position
                 currX = (int) event.getRawX();
@@ -76,6 +74,7 @@ public class MovingTaskListener implements OnTouchListener {
                 actualDeltaX = currX - downRawX;
 
                 if (isLong) {
+                    usingActivity.hideTasks(this);
                     // Lock scrolling in ScrollView
                     view.getParent().requestDisallowInterceptTouchEvent(true);
 
@@ -88,6 +87,7 @@ public class MovingTaskListener implements OnTouchListener {
                     linearLayout.setLayoutParams(layoutParams);
 
                     if (layoutParams.leftMargin == SWIPED_POS && currPosition == USUAL_POS) {
+                        usingActivity.setTaskOpened(true);
                         alignTo(SWIPED_POS);
                     } else if (layoutParams.leftMargin == USUAL_POS && currPosition == SWIPED_POS) {
                         alignTo(USUAL_POS);
@@ -135,7 +135,7 @@ public class MovingTaskListener implements OnTouchListener {
     public void stopPost() {
         isLong = false;
         handler.removeCallbacks(mLongPressed);
-        translateBack();
+        //translateBack();
     }
 
     private void alignTo(int side) {
@@ -146,7 +146,7 @@ public class MovingTaskListener implements OnTouchListener {
         toReturn = false;
     }
 
-    private boolean translateBack() {
+    public boolean translateBack() {
         if (layoutParams == null)
             return false;
 

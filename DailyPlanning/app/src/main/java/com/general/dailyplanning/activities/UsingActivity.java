@@ -38,6 +38,8 @@ import java.util.ArrayList;
 
 public class UsingActivity extends AppCompatActivity {
 
+    private boolean taskOpened = false;
+
     private ArrayList<MovingTaskListener> listeners = new ArrayList<>();
 
     private ArrayList<Task> tasks = new ArrayList<>();
@@ -60,6 +62,7 @@ public class UsingActivity extends AppCompatActivity {
 
                 for (MovingTaskListener listener: listeners) {
                     listener.stopPost();
+                    listener.translateBack();
                 }
                 return true;
             }
@@ -175,16 +178,29 @@ public class UsingActivity extends AppCompatActivity {
         TouchSwipeDateListener.hide();
     }
 
-    /*
-    @Override
-    public boolean dispatchTouchEvent(final MotionEvent motionEvent) {
-        // Hide "+" button
-        if(TouchSwipeDateListener.hide())
-            return true;
-        //findViewById(R.id.textViewDate).setEnabled(false);
-        return super.dispatchTouchEvent(motionEvent);
-        //return true;
-    }
-    */
+   public void hideTasks(MovingTaskListener exp) {
+        if (taskOpened) {
+           for (MovingTaskListener listener: listeners) {
+               if (!listener.equals(exp)) {
+                   listener.translateBack();
+               }
+           }
+        }
+   }
 
+   public void hideAllTasks() {
+       if (taskOpened) {
+           for (MovingTaskListener listener: listeners) {
+               listener.translateBack();
+           }
+       }
+   }
+
+    public boolean isTaskOpened() {
+        return taskOpened;
+    }
+
+    public void setTaskOpened(boolean b) {
+        taskOpened = b;
+    }
 }
