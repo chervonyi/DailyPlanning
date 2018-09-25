@@ -9,6 +9,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class DataManipulator {
+    /**
+     * Saving serializable object into phone's memory
+     * @param context - required
+     * @param fileName - name of file which will be saved data
+     * @param vault - serializable object
+     */
     public static void saving(Context context, String fileName, Vault vault) {
         FileOutputStream fos;
         ObjectOutputStream os;
@@ -25,6 +31,12 @@ public class DataManipulator {
         }
     }
 
+    /**
+     * Loading serializable object from phone's memory
+     * @param context - required
+     * @param fileName - name of file which has been saved
+     * @return serializable object with data that contains in ArrayList
+     */
     public static Vault loading(Context context, String fileName) {
         ObjectInputStream is = null;
 
@@ -43,6 +55,5 @@ public class DataManipulator {
         }
 
         return vault;
-
     }
 }

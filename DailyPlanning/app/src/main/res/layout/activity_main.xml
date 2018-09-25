@@ -20,7 +20,6 @@
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="591dp"
@@ -91,7 +90,6 @@
                     </LinearLayout>
                 </ScrollView>
 
-                <!--android:layout_gravity="center"-->
                 <Button
                     android:id="@+id/buttonAddNewTask"
                     style="?android:attr/borderlessButtonStyle"
@@ -110,8 +108,6 @@
 
             </FrameLayout>
 
-
-
             <Button
                 android:id="@+id/buttonSave"
                 android:layout_width="match_parent"
@@ -123,10 +119,6 @@
                 android:text="@string/saveButton"
                 android:onClick="onClickSave"
                 android:textSize="14sp"/>
-
-
-
-
 
             <!--Move to ScrollView-->
             <TextView
@@ -143,8 +135,6 @@
                 android:textColor="@color/fontWhite"
                 android:textSize="8pt"
                 android:visibility="invisible" />
-
-
 
         </LinearLayout>
 

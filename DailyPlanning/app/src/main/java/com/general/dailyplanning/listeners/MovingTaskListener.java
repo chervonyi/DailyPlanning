@@ -11,9 +11,9 @@ import com.general.dailyplanning.activities.UsingActivity;
 import com.general.dailyplanning.components.Vibrate;
 
 public class MovingTaskListener implements OnTouchListener {
+    // Constants
     private final int LONG_PRESS_TIMEOUT = 500;
     private final int MAX_RADIUS_OF_TOUCH = 50;
-
     private final int SWIPED_POS = -200;
     private final int USUAL_POS = 0;
 
@@ -24,14 +24,13 @@ public class MovingTaskListener implements OnTouchListener {
     private boolean toReturn;
     private LinearLayout linearLayout;
     private LinearLayout.LayoutParams layoutParams;
-
     public UsingActivity usingActivity;
 
     public MovingTaskListener(UsingActivity usingActivity) {
         this.usingActivity = usingActivity;
     }
 
-    // Timer for checking Long Touch
+    // Timer for checking LongTouch
     private final Handler handler = new Handler();
     private Runnable mLongPressed = new Runnable() {
         public void run() {
@@ -59,17 +58,16 @@ public class MovingTaskListener implements OnTouchListener {
                 downX = (int) event.getX();
                 downRawX = (int) event.getRawX();
 
-                // Start timer on check if press is long
+                // Start the timer on check if press is long
                 handler.postDelayed(mLongPressed, LONG_PRESS_TIMEOUT);
                 break;
 
             case MotionEvent.ACTION_MOVE:
-
                 toReturn = true;
-                // Get current position
+                // Get the current position
                 currX = (int) event.getRawX();
 
-                // Get length of move
+                // Get the length of move
                 deltaX = currX - downX;
                 actualDeltaX = currX - downRawX;
 
@@ -78,6 +76,7 @@ public class MovingTaskListener implements OnTouchListener {
                     // Lock scrolling in ScrollView
                     view.getParent().requestDisallowInterceptTouchEvent(true);
 
+                    // Round the values of deltaX at the edges
                     if (deltaX > USUAL_POS)
                         deltaX = USUAL_POS;
                     else if (deltaX < SWIPED_POS)
@@ -86,10 +85,12 @@ public class MovingTaskListener implements OnTouchListener {
                     layoutParams.leftMargin = deltaX;
                     linearLayout.setLayoutParams(layoutParams);
 
+                    // Pin a block at the edges
                     if (layoutParams.leftMargin == SWIPED_POS && currPosition == USUAL_POS) {
                         usingActivity.setTaskOpened(true);
                         alignTo(SWIPED_POS);
                     } else if (layoutParams.leftMargin == USUAL_POS && currPosition == SWIPED_POS) {
+                        usingActivity.setTaskOpened(false);
                         alignTo(USUAL_POS);
                     }
 
@@ -132,12 +133,18 @@ public class MovingTaskListener implements OnTouchListener {
         return true;
     }
 
+    /**
+     * Feature for stop buggy behavior with scrolling
+     */
     public void stopPost() {
         isLong = false;
         handler.removeCallbacks(mLongPressed);
-        //translateBack();
     }
 
+    /**
+     * Attaching a block to one side
+     * @param side
+     */
     private void alignTo(int side) {
         isLong = false;
         currPosition = side;
@@ -146,6 +153,10 @@ public class MovingTaskListener implements OnTouchListener {
         toReturn = false;
     }
 
+    /**
+     * Moves opened taskBlock to usual position with animation
+     * @return
+     */
     public boolean translateBack() {
         if (layoutParams == null)
             return false;

@@ -1,31 +1,23 @@
 package com.general.dailyplanning.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.general.dailyplanning.R;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
-import com.general.dailyplanning.listeners.MovingTaskListener;
 import com.general.dailyplanning.listeners.SwipeDownDateListener;
 import com.general.dailyplanning.listeners.TouchDateListener;
-import com.general.dailyplanning.listeners.TouchSwipeDateListener;
 
 import java.util.ArrayList;
 
@@ -39,35 +31,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView taskView = findViewById(R.id.textViewTasks);
-        TextView dateView = findViewById(R.id.textViewDate);
-
-        // Set swipe listener for Task Bar
+        // Set swipeListener for Task Bar
         SwipeDownDateListener swipeListener = new SwipeDownDateListener(this);
-        taskView.setOnTouchListener(swipeListener);
+        findViewById(R.id.textViewTasks).setOnTouchListener(swipeListener);
 
-        // Set touch listener to show "+" button
+        // Set touchListener to show "+" button
         TouchDateListener touchDateListener = new TouchDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
-        dateView.setOnTouchListener(touchDateListener);
+        findViewById(R.id.textViewDate).setOnTouchListener(touchDateListener);
 
         // Set touch listener to hide "+" button
         findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // Hide "+" button
                 TouchDateListener.hide();
                 return true;
             }
         });
 
-        // Loading data
+        // Loading data from file
         Vault vault = DataManipulator.loading(this, "data");
         if (vault != null) {
             Vault.setInstance(vault);
             tasks = vault.getArray();
         }
 
-        // Filling ScrollView with tasks
+        // Filling up ScrollView with tasks
         updateTasksList();
     }
 
@@ -107,15 +95,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, UsingActivity.class);
         startActivity(intent);
         // TODO Hide this button
-    }
-
-    public void vibrate(long milliSeconds) {
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(milliSeconds,VibrationEffect.DEFAULT_AMPLITUDE));
-        }else{
-            v.vibrate(milliSeconds);
-        }
     }
 }

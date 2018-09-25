@@ -5,33 +5,22 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.general.dailyplanning.R;
-import com.general.dailyplanning.activities.CreatingActivity;
-import com.general.dailyplanning.components.Vibrate;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
 import com.general.dailyplanning.listeners.MovingTaskListener;
-import com.general.dailyplanning.listeners.Scrolling;
-import com.general.dailyplanning.listeners.TouchDateListener;
 import com.general.dailyplanning.listeners.TouchSwipeDateListener;
 
 import java.util.ArrayList;
@@ -51,15 +40,13 @@ public class UsingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_using);
 
-        RelativeLayout layoutDate = findViewById(R.id.layoutDate);
-        ScrollView scrollView = findViewById(R.id.scrollView);
-
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
+        findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // Hide "+" button
                 TouchSwipeDateListener.hide();
 
+                // Feature for stop buggy behavior
                 for (MovingTaskListener listener: listeners) {
                     listener.stopPost();
                     listener.translateBack();
@@ -70,7 +57,7 @@ public class UsingActivity extends AppCompatActivity {
 
         // Set touch listener to show "+" button
         TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
-        layoutDate.setOnTouchListener(swdl);
+        findViewById(R.id.layoutDate).setOnTouchListener(swdl);
 
         // Loading data
         Vault vault = DataManipulator.loading(this, "data");
@@ -79,16 +66,15 @@ public class UsingActivity extends AppCompatActivity {
             tasks = vault.getArray();
         }
 
-        updateTasksList();
+        // Filling up taskList with some information
+        updateTaskList();
     }
 
+    /**
+     * Updating task-list with tasks that were saved in memory.
+     */
     @SuppressLint("ClickableViewAccessibility")
-    private void updateTasksList() {
-        LinearLayout scrollLayout = findViewById(R.id.scrollLayout);
-        if (scrollLayout.getChildCount() > 0) {
-            scrollLayout.removeAllViews();
-        }
-
+    private void updateTaskList() {
         final Context context = this;
         TextView view;
         LinearLayout innerLayout;
@@ -97,8 +83,15 @@ public class UsingActivity extends AppCompatActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, 100);
         params.setMargins(0,10,0,0);
 
+        LinearLayout scrollLayout = findViewById(R.id.scrollLayout);
+        // Clear a body
+        if (scrollLayout.getChildCount() > 0) {
+            scrollLayout.removeAllViews();
+        }
+
         int id = 0;
         for (Task task: tasks) {
+            // Task Block
             view = new TextView(this);
             view.setText(task.toString());
             view.setBackgroundColor(getResources().getColor(R.color.backgroundGrey));
@@ -110,7 +103,6 @@ public class UsingActivity extends AppCompatActivity {
             view.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
             view.setPadding(70, 0, 70, 0);
             view.setTypeface(ResourcesCompat.getFont(this, R.font.light)); // Roboto-Light
-
             movingTaskListener = new MovingTaskListener(this);
             listeners.add(movingTaskListener);
             view.setOnTouchListener(movingTaskListener);
@@ -120,6 +112,7 @@ public class UsingActivity extends AppCompatActivity {
             innerLayout.setTag("task_" + id++);
             innerLayout.addView(view);
 
+            // Optional buttons:
             buttonEdit = new Button(this);
             buttonEdit.setLayoutParams(params);
             buttonEdit.setBackground(getResources().getDrawable(R.drawable.button_edit));
@@ -132,7 +125,6 @@ public class UsingActivity extends AppCompatActivity {
 
                     Task selectedTask = vault.get(idTask);
 
-                    // Go to CreatingActivity with some flags that this Activity should create task in "Tomorrow TO-DO List"
                     Intent intent = new Intent(context, CreatingActivity.class);
 
                     intent.putExtra("type", CreatingActivity.EDITING);
@@ -143,7 +135,6 @@ public class UsingActivity extends AppCompatActivity {
             });
             innerLayout.addView(buttonEdit);
 
-
             buttonDelete = new Button(this);
             buttonDelete.setLayoutParams(params);
             buttonDelete.setBackground(getResources().getDrawable(R.drawable.button_delete));
@@ -153,16 +144,17 @@ public class UsingActivity extends AppCompatActivity {
                     LinearLayout linearLayout = (LinearLayout) v.getParent();
                     // Get id from Tag. E-g: task_12 => id = 12
                     int idTask = Integer.parseInt(linearLayout.getTag().toString().substring(5));
+
                     Vault vault = Vault.getInstance();
 
-                    // Remove element
+                    // Remove necessary element
                     vault.remove(idTask);
 
                     // Save vault
                     DataManipulator.saving(context, "data", vault);
 
-                    updateTasksList();
-                    // +- Add anim
+                    updateTaskList();
+                    // TODO: Add anim
                 }
             });
             innerLayout.addView(buttonDelete);
@@ -171,6 +163,10 @@ public class UsingActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Start new activity with option of creating a new task
+     * @param view
+     */
     public void onClickAddNewTask(View view) {
         Intent intent = new Intent(this, CreatingActivity.class);
         intent.putExtra("type", CreatingActivity.CREATING_NEW);
@@ -178,7 +174,11 @@ public class UsingActivity extends AppCompatActivity {
         TouchSwipeDateListener.hide();
     }
 
-   public void hideTasks(MovingTaskListener exp) {
+    /**
+     * Hide all taskBlocks except one which will be received
+     * @param exp - one active taskBlock
+     */
+    public void hideTasks(MovingTaskListener exp) {
         if (taskOpened) {
            for (MovingTaskListener listener: listeners) {
                if (!listener.equals(exp)) {
@@ -186,18 +186,18 @@ public class UsingActivity extends AppCompatActivity {
                }
            }
         }
-   }
+    }
 
-   public void hideAllTasks() {
+    /**
+     * Hide all taskBlocks and set flag about it
+     */
+    public void hideAllTasks() {
        if (taskOpened) {
            for (MovingTaskListener listener: listeners) {
                listener.translateBack();
            }
+           taskOpened = false;
        }
-   }
-
-    public boolean isTaskOpened() {
-        return taskOpened;
     }
 
     public void setTaskOpened(boolean b) {

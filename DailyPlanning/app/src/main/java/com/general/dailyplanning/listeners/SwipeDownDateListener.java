@@ -1,6 +1,5 @@
 package com.general.dailyplanning.listeners;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -10,22 +9,24 @@ import android.widget.LinearLayout;
 import com.general.dailyplanning.activities.MainActivity;
 
 public class SwipeDownDateListener implements OnTouchListener {
-    private final int USUAL_POS = 0;
-    private final int SWIPED_POS = 1;
-
+    // Constants
+    private final int USUAL_POS = 0x000001;
+    private final int SWIPED_POS = 0x000002;
     private int HEIGHT_HIDDEN_PANEL = 1180;
     private int SWIPE_LINE_1 = -1000;
     private int SWIPE_LINE_2 = -100;
 
+    // Vars
     private int currPosition = USUAL_POS;
-    private int downY, downRawY;
-    private boolean moving = true;
-    private boolean toReturn = true;
     private LinearLayout linearLayout;
     private LinearLayout.LayoutParams layoutParams;
     private TranslateAnimation anim;
-
+    private int downY, downRawY;
     public MainActivity mainActivity;
+
+    // States
+    private boolean moving = true;
+    private boolean toReturn = true;
 
     public SwipeDownDateListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -40,6 +41,7 @@ public class SwipeDownDateListener implements OnTouchListener {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                // Get info about a touch
                 TouchDateListener.hide();
                 downY = (int) event.getY();
                 downRawY = (int) event.getRawY();
@@ -49,24 +51,28 @@ public class SwipeDownDateListener implements OnTouchListener {
 
             case MotionEvent.ACTION_MOVE:
                 if (moving) {
-                    // Get current position
+                    // Get the current position
                     currY = (int) event.getRawY();
 
-                    // Get length of move
+                    // Get the length of move
                     deltaY = currY - downY;
                     actualDelta = currY - downRawY;
 
                     // Scope of swiping
-                    if (deltaY < 0)
+                    if (deltaY < 0) {
                         deltaY = 0;
-                    else if (deltaY > HEIGHT_HIDDEN_PANEL)
+                    } else if (deltaY > HEIGHT_HIDDEN_PANEL) {
                         deltaY = HEIGHT_HIDDEN_PANEL;
+                    }
 
+                    // Calculate the right value of moving
                     move = -HEIGHT_HIDDEN_PANEL + deltaY;
 
+                    // Move layout
                     layoutParams.topMargin = move;
                     linearLayout.setLayoutParams(layoutParams);
 
+                    // Start animation in necessary conditions
                     if (currPosition == USUAL_POS && layoutParams.topMargin > SWIPE_LINE_1) {
                         translateTo(SWIPED_POS, 0, -HEIGHT_HIDDEN_PANEL + actualDelta, 200);
                     } else if (currPosition == SWIPED_POS && layoutParams.topMargin < SWIPE_LINE_2) {
@@ -81,28 +87,31 @@ public class SwipeDownDateListener implements OnTouchListener {
                 if (toReturn) {
                     actualDelta = (int) event.getRawY() - downRawY;
 
+                    // Returning layout back to appropriate position with animation
                     if (currPosition == USUAL_POS) {
                         if (actualDelta < 0) {
                             actualDelta = 0;
                         }
-
                         translateTo(currPosition, -HEIGHT_HIDDEN_PANEL, actualDelta, 50);
                     } else {
                         if (actualDelta > 0) {
                             actualDelta = 0;
                         }
-
                         translateTo(currPosition, 0, actualDelta, 50);
                     }
                 }
                 break;
         }
-
         return true;
     }
 
-
-
+    /**
+     * Attaching the block to necessary position with animation
+     * @param newPos - necessary position
+     * @param newTopMargin appropriate value of newPos
+     * @param fromYDelta - animation's setting
+     * @param animDuration - animation's setting
+     */
     private void translateTo(int newPos, int newTopMargin, int fromYDelta, int animDuration ) {
         moving = false;
         toReturn = false;
@@ -110,6 +119,7 @@ public class SwipeDownDateListener implements OnTouchListener {
 
         layoutParams.topMargin = newTopMargin;
         linearLayout.setLayoutParams(layoutParams);
+
         anim = new TranslateAnimation(0, 0, fromYDelta, 0);
         anim.setDuration(animDuration);
         anim.setFillAfter(true);

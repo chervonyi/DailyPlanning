@@ -17,32 +17,31 @@ import com.general.dailyplanning.activities.UsingActivity;
 import com.general.dailyplanning.components.Vibrate;
 
 public class TouchSwipeDateListener implements View.OnTouchListener {
-    private int posX = 0;
-    private static boolean isHidden = true;
-    private static boolean swiped = false;
-
-    private static RelativeLayout relativeLayout;
-    private static FrameLayout.LayoutParams layoutParams;
-
+    // Constants
     private static final int SWIPED_POS = -720;
     private static final int USUAL_POS = 0;
     private  final int SWIPE_BORDER = 200;
 
+    // Vars
+    private static RelativeLayout relativeLayout;
+    private static FrameLayout.LayoutParams layoutParams;
     private static int currPosition = USUAL_POS;
     private int downRawX;
-
-    public UsingActivity usingActivity;
     private static Button buttonAdd;
     private static TranslateAnimation anim;
+    public UsingActivity usingActivity;
+
+    // States
+    private static boolean isHidden = true;
+    private static boolean swiped = false;
 
     public TouchSwipeDateListener(UsingActivity usingActivity, Button buttonAdd) {
         this.usingActivity = usingActivity;
-        this.buttonAdd = buttonAdd;
+        TouchSwipeDateListener.buttonAdd = buttonAdd;
     }
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-
         int currX, actualDelta;
 
         usingActivity.hideAllTasks();
@@ -51,23 +50,25 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                // Get information about a touch
                 swiped = false;
                 downRawX = (int) event.getRawX();
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                // Get current position
+                // Get the current position
                 currX = (int) event.getRawX();
 
-                // Get length of move
+                // Get the length of move
                 actualDelta = currX - downRawX;
 
-                // Check if touch indeed is moving
+                // Check if a touch is moving
                 if (Math.abs(actualDelta) > 30) {
                     hide();
                     swiped = true;
                 }
 
+                // Detect swipe
                 if (currPosition == USUAL_POS && actualDelta < -SWIPE_BORDER) {
                     alignTo(SWIPED_POS);
                 } else if(currPosition == SWIPED_POS && actualDelta > SWIPE_BORDER) {
@@ -78,7 +79,7 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
             case MotionEvent.ACTION_UP:
                 if (!swiped) {
                     if (currPosition == USUAL_POS) {
-                        // Show "+" button
+                        // Showing "+" button
                         if (isHidden) {
                             buttonAdd.setVisibility(View.VISIBLE);
 
@@ -96,9 +97,9 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
                             hide();
                         }
                     } else  {
-                        // Go to CreatingActivity with some flags that this Activity should create task in "Tomorrow TO-DO List"
+                        // Click on "Remind tomorrow" button
                         Intent intent = new Intent(usingActivity, CreatingActivity.class);
-                        // TODO Put some extra
+                        // TODO Put some extra (CreatingActivity.CREATING_NEW_ON_TOMORROW)
                         usingActivity.startActivity(intent);
                     }
                 }
@@ -108,6 +109,10 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
         return true;
     }
 
+    /**
+     * Attaching a block to one side
+     * @param side - necessary sude
+     */
     private static void alignTo(int side) {
         currPosition = side;
         layoutParams.leftMargin = side;
@@ -125,6 +130,9 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
         relativeLayout.startAnimation(anim);
     }
 
+    /**
+     * Hiding the optional button
+     */
     public static void hide() {
        if (!isHidden) {
            isHidden = true;

@@ -4,22 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import com.general.dailyplanning.data.*;
 
 import com.general.dailyplanning.R;
@@ -27,7 +19,6 @@ import com.general.dailyplanning.R;
 import java.util.Calendar;
 
 public class CreatingActivity extends AppCompatActivity {
-
     // Constants
     public final static int CREATING_NEW = 0x0000001;
     public final static int EDITING = 0x0000002;
@@ -37,7 +28,7 @@ public class CreatingActivity extends AppCompatActivity {
     private EditText newTask;
     private Button buttonSelectTime;
 
-    // Extras
+    // Extras variables
     private int type;
 
     // States
@@ -56,7 +47,7 @@ public class CreatingActivity extends AppCompatActivity {
 
         type = intent.getIntExtra("type", -1);
 
-        // Get extras for different activities purpose
+        // Upload extras for different activities purpose
         switch (type) {
             case CREATING_NEW:
                 break;
@@ -72,14 +63,17 @@ public class CreatingActivity extends AppCompatActivity {
 
         }
 
-        // Hide SelectTime button while task have not been entered
+        // Hide 'selectTime' button while task have not been entered
         newTask.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     newTask.clearFocus();
 
+                    // Hide keyboard on click 'Done'
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
 
                     if (newTask.getText().length() > 0) {
                         buttonSelectTime.setVisibility(View.VISIBLE);
@@ -93,6 +87,10 @@ public class CreatingActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Display TimePicker and then given time sets to the beginning of task's title
+     * @param view
+     */
     public void onClickSelectTime(View view) {
         // Default position of time picker
         Calendar mcurrentTime = Calendar.getInstance();
@@ -107,7 +105,7 @@ public class CreatingActivity extends AppCompatActivity {
                 String hours = selectedHour < 10 ? "0" + selectedHour : String.valueOf(selectedHour);
                 String minutes = selectedMinute < 10 ? "0" + selectedMinute : String.valueOf(selectedMinute);
 
-                String tmp = "";
+                String tmp;
                 // Pattern: "12:34 - Reading a book"
                 if (timeSelected) {
                     tmp = newTask.getText().toString();
@@ -125,6 +123,10 @@ public class CreatingActivity extends AppCompatActivity {
         mTimePicker.show();
     }
 
+    /**
+     * Saving a new task with Vault into phone's memory
+     * @param view
+     */
     public void onClickSave(View view) {
         String titleOfTask = newTask.getText().toString();
 
