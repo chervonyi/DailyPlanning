@@ -38,7 +38,6 @@ public class Vault implements Serializable {
                 added = true;
                 break;
             }
-
             i++;
         }
 
@@ -77,6 +76,14 @@ public class Vault implements Serializable {
         Task task = array.get(id);
         array.remove(id);
         return task;
+    }
+
+    /**
+     * Removes the task from the TO-DO List by id
+     * @param id - a necessary task's id
+     */
+    public void removeFromToDoList(int id) {
+        tomorrowArray.remove(id);
     }
 
     /**

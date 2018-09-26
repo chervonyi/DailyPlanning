@@ -7,24 +7,20 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.general.dailyplanning.R;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
-import com.general.dailyplanning.listeners.MovingTaskListener;
 import com.general.dailyplanning.listeners.MovingToDoListListener;
 import com.general.dailyplanning.listeners.SwipeDownDateListener;
 import com.general.dailyplanning.listeners.TouchDateListener;
-import com.general.dailyplanning.listeners.TouchSwipeDateListener;
 
 import java.util.ArrayList;
 
@@ -61,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.scrollViewToDoList).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // Feature for stop buggy behavior
+                // Feature for stop buggy behavior with scrolling
                 for (MovingToDoListListener listener: listeners) {
                     listener.stopPost();
                 }
@@ -69,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
 
         // Loading data from file
         Vault vault = DataManipulator.loading(this, "data");
@@ -92,12 +86,14 @@ public class MainActivity extends AppCompatActivity {
      */
     @SuppressLint("ClickableViewAccessibility")
     private void updateToDoList() {
+        final Context context = this;
         TextView view;
         LinearLayout innerLayout;
         MovingToDoListListener mTDListListener;
-        Button buttonDelete, buttonAdd;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(150, 150);
-        params.setMargins(0,0,0,0);
+        Button buttonDelete;
+        Button buttonAdd;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(130, 130);
+        params.setMargins(0,-3,0,0);
 
         LinearLayout scrollLayout = findViewById(R.id.toDoLayout);
         // Clear a body
@@ -112,12 +108,10 @@ public class MainActivity extends AppCompatActivity {
             // Task Block
             view = new TextView(this);
             view.setText(task);
-            view.setBackgroundColor(getResources().getColor(R.color.backgroundGrey));
             view.setTextSize(18);
-            view.setHeight(150);
+            view.setHeight(130);
             view.setWidth(720);
             view.setTextColor(getResources().getColor(R.color.fontWhite));
-            view.setBackground(ContextCompat.getDrawable(this, R.drawable.todo_task));
             view.setGravity(Gravity.CENTER);
             view.setPadding(70, 0, 70, 0);
             view.setTypeface(ResourcesCompat.getFont(this, R.font.light)); // Roboto-Light
@@ -128,18 +122,55 @@ public class MainActivity extends AppCompatActivity {
             innerLayout = new LinearLayout(this);
             innerLayout.setOrientation(LinearLayout.HORIZONTAL);
             innerLayout.setTag("task_" + id++);
+            innerLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.todo_task));
             innerLayout.addView(view);
 
             // Optional buttons:
-            buttonAdd = new Button(this);
-            //buttonAdd.setLayoutParams(params);
-            buttonAdd.setBackground(getResources().getDrawable(R.drawable.button_edit));
-            innerLayout.addView(buttonAdd);
-
             buttonDelete = new Button(this);
-            //buttonDelete.setLayoutParams(params);
+            buttonDelete.setLayoutParams(params);
             buttonDelete.setBackground(getResources().getDrawable(R.drawable.button_delete_sq));
+            buttonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout linearLayout = (LinearLayout) v.getParent();
+                    int idTask = Integer.parseInt(linearLayout.getTag().toString().substring(5));
+                    Vault vault = Vault.getInstance();
+
+                    vault.removeFromToDoList(idTask);
+
+                    // Save vault
+                    DataManipulator.saving(context, "data", vault);
+
+                    // Refresh panel with new data
+                    updateToDoList();
+                }
+            });
             innerLayout.addView(buttonDelete);
+
+            buttonAdd = new Button(this);
+            buttonAdd.setLayoutParams(params);
+            buttonAdd.setBackground(getResources().getDrawable(R.drawable.button_add_sq));
+            buttonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout linearLayout = (LinearLayout) v.getParent();
+                    int idTask = Integer.parseInt(linearLayout.getTag().toString().substring(5));
+
+                    Vault vault = Vault.getInstance();
+
+                    Intent intent = new Intent(context, CreatingActivity.class);
+                    intent.putExtra("type", CreatingActivity.CREATING_FROM_TODO_LIST);
+                    intent.putExtra("task", vault.getTomorrowArray().get(idTask));
+                    context.startActivity(intent);
+
+                    vault.removeFromToDoList(idTask);
+                    DataManipulator.saving(context, "data", vault);
+
+                    // Refresh panel with new data
+                    updateToDoList();
+                }
+            });
+            innerLayout.addView(buttonAdd);
 
             scrollLayout.addView(innerLayout);
         }

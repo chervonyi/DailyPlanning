@@ -15,7 +15,7 @@ public class MovingToDoListListener implements OnTouchListener {
     // Constants
     private final int LONG_PRESS_TIMEOUT = 500;
     private final int MAX_RADIUS_OF_TOUCH = 50;
-    private final int SWIPED_POS = -200;
+    private final int SWIPED_POS = -260;
     private final int USUAL_POS = 0;
 
     private int currPosition = USUAL_POS;

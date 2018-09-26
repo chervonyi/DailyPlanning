@@ -23,6 +23,7 @@ public class CreatingActivity extends AppCompatActivity {
     public final static int CREATING_NEW = 0x0000001;
     public final static int EDITING = 0x0000002;
     public final static int CREATING_NEW_ON_TOMORROW = 0x0000003;
+    public final static int CREATING_FROM_TODO_LIST = 0x0000004;
 
     // Views
     private EditText newTask;
@@ -61,6 +62,11 @@ public class CreatingActivity extends AppCompatActivity {
             case CREATING_NEW_ON_TOMORROW:
                 Button btn = findViewById(R.id.buttonSave);
                 btn.setText("REMIND TOMORROW");
+                break;
+
+            case CREATING_FROM_TODO_LIST:
+                buttonSelectTime.setVisibility(View.VISIBLE);
+                newTask.setText(intent.getStringExtra("task"));
                 break;
 
         }
@@ -134,24 +140,33 @@ public class CreatingActivity extends AppCompatActivity {
 
         // Get current state of Vault
         Vault vault = Vault.getInstance();
-
+        Intent intent;
         switch (type) {
             case CREATING_NEW:
             case EDITING:
+                intent = new Intent(this, UsingActivity.class);
                 vault.add(new Task(titleOfTask));
                 break;
 
             case CREATING_NEW_ON_TOMORROW:
+                intent = new Intent(this, UsingActivity.class);
                 vault.addTomorrow(titleOfTask);
                 break;
+
+            case CREATING_FROM_TODO_LIST:
+                intent = new Intent(this, MainActivity.class);
+                vault.add(new Task(titleOfTask));
+                break;
+
+            default:
+                intent = new Intent(this, MainActivity.class);
+
         }
 
         // Save vault
         // TODO: Move Vault's saving into onClose() method
         DataManipulator.saving(this, "data", vault);
 
-        //Intent intent = new Intent(this, MainActivity.class);
-        Intent intent = new Intent(this, UsingActivity.class);
         startActivity(intent);
     }
 }
