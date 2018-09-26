@@ -1,11 +1,13 @@
 package com.general.dailyplanning.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,8 +20,11 @@ import com.general.dailyplanning.R;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
+import com.general.dailyplanning.listeners.MovingTaskListener;
+import com.general.dailyplanning.listeners.MovingToDoListListener;
 import com.general.dailyplanning.listeners.SwipeDownDateListener;
 import com.general.dailyplanning.listeners.TouchDateListener;
+import com.general.dailyplanning.listeners.TouchSwipeDateListener;
 
 import java.util.ArrayList;
 
@@ -27,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Task> tasks = new ArrayList<>();
     private ArrayList<String> toDoList = new ArrayList<>();
+    private ArrayList<MovingToDoListListener> listeners = new ArrayList<>();
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -48,9 +54,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 TouchDateListener.hide();
-                return true;
+                return false;
             }
         });
+
+        findViewById(R.id.scrollViewToDoList).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Feature for stop buggy behavior
+                for (MovingToDoListListener listener: listeners) {
+                    listener.stopPost();
+                }
+
+                return false;
+            }
+        });
+
+
 
         // Loading data from file
         Vault vault = DataManipulator.loading(this, "data");
@@ -67,31 +87,61 @@ public class MainActivity extends AppCompatActivity {
         updateTasksList();
     }
 
-
     /**
      * Fills up TO-DO list with tasks
      */
+    @SuppressLint("ClickableViewAccessibility")
     private void updateToDoList() {
-        LinearLayout toDoLayout = findViewById(R.id.toDoLayout);
-        if (toDoLayout.getChildCount() > 0) {
-            toDoLayout.removeAllViews();
-        }
-        toDoLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.todo_list_stroke));
-
         TextView view;
+        LinearLayout innerLayout;
+        MovingToDoListListener mTDListListener;
+        Button buttonDelete, buttonAdd;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(150, 150);
+        params.setMargins(0,0,0,0);
 
+        LinearLayout scrollLayout = findViewById(R.id.toDoLayout);
+        // Clear a body
+        if (scrollLayout.getChildCount() > 0) {
+            scrollLayout.removeAllViews();
+        }
+
+        scrollLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.todo_list_stroke));
+
+        int id = 0;
         for (String task: toDoList) {
+            // Task Block
             view = new TextView(this);
             view.setText(task);
             view.setBackgroundColor(getResources().getColor(R.color.backgroundGrey));
             view.setTextSize(18);
             view.setHeight(150);
+            view.setWidth(720);
             view.setTextColor(getResources().getColor(R.color.fontWhite));
             view.setBackground(ContextCompat.getDrawable(this, R.drawable.todo_task));
-            view.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER);
-            //view.setPadding(0, 10, 0, 10);
-            view.setTypeface(ResourcesCompat.getFont(this, R.font.light));
-            toDoLayout.addView(view);
+            view.setGravity(Gravity.CENTER);
+            view.setPadding(70, 0, 70, 0);
+            view.setTypeface(ResourcesCompat.getFont(this, R.font.light)); // Roboto-Light
+            mTDListListener = new MovingToDoListListener(this);
+            listeners.add(mTDListListener);
+            view.setOnTouchListener(mTDListListener);
+
+            innerLayout = new LinearLayout(this);
+            innerLayout.setOrientation(LinearLayout.HORIZONTAL);
+            innerLayout.setTag("task_" + id++);
+            innerLayout.addView(view);
+
+            // Optional buttons:
+            buttonAdd = new Button(this);
+            //buttonAdd.setLayoutParams(params);
+            buttonAdd.setBackground(getResources().getDrawable(R.drawable.button_edit));
+            innerLayout.addView(buttonAdd);
+
+            buttonDelete = new Button(this);
+            //buttonDelete.setLayoutParams(params);
+            buttonDelete.setBackground(getResources().getDrawable(R.drawable.button_delete_sq));
+            innerLayout.addView(buttonDelete);
+
+            scrollLayout.addView(innerLayout);
         }
     }
 

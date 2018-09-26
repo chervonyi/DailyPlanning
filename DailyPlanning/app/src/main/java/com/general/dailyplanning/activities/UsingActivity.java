@@ -51,7 +51,7 @@ public class UsingActivity extends AppCompatActivity {
                     listener.stopPost();
                     listener.translateBack();
                 }
-                return true;
+                return false;
             }
         });
 
