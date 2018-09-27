@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -11,12 +12,18 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.general.dailyplanning.components.DateComposer;
 import com.general.dailyplanning.data.*;
 
 import com.general.dailyplanning.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class CreatingActivity extends AppCompatActivity {
     // Constants
@@ -35,17 +42,34 @@ public class CreatingActivity extends AppCompatActivity {
     // States
     private boolean timeSelected = false;
 
+    private TextView dateView;
+
+    // Clock
+    private final Handler timeClock = new Handler();
+    private Runnable minChange = new Runnable() {
+        public void run() {
+            String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
+            String text = time + " " + DateComposer.getDate();
+            dateView.setText(text);
+            // Update time every 10 sec
+            timeClock.postDelayed(this, 10000);
+        }
+    };
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creating);
 
+        dateView = findViewById(R.id.textViewDate);
         newTask = findViewById(R.id.editNewTaskTitle);
         buttonSelectTime = findViewById(R.id.buttonSelectTime);
 
-        Intent intent = getIntent();
+        // Update date
+        timeClock.postDelayed(minChange, 0);
 
+        Intent intent = getIntent();
         type = intent.getIntExtra("type", -1);
 
         // Upload extras for different activities purpose

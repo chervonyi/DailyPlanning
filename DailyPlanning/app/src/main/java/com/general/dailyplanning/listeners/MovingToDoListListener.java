@@ -118,7 +118,7 @@ public class MovingToDoListListener implements OnTouchListener {
 
                     anim.setDuration(200);
                     anim.setFillAfter(true);
-                    linearLayout.startAnimation(anim);
+                    view.startAnimation(anim);
                 }
 
                 isLong = false;

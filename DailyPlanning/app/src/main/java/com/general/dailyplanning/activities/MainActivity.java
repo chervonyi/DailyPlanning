@@ -3,6 +3,7 @@ package com.general.dailyplanning.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.general.dailyplanning.R;
+import com.general.dailyplanning.components.DateComposer;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
@@ -22,7 +24,10 @@ import com.general.dailyplanning.listeners.MovingToDoListListener;
 import com.general.dailyplanning.listeners.SwipeDownDateListener;
 import com.general.dailyplanning.listeners.TouchDateListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +35,19 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> toDoList = new ArrayList<>();
     private ArrayList<MovingToDoListListener> listeners = new ArrayList<>();
 
+    private TextView dateView;
+
+    // Clock
+    private final Handler timeClock = new Handler();
+    private Runnable minChange = new Runnable() {
+        public void run() {
+            String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
+            String text = time + " " + DateComposer.getDate();
+            dateView.setText(text);
+            // Update time every 10 sec
+            timeClock.postDelayed(this, 10000);
+        }
+    };
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -37,13 +55,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dateView = findViewById(R.id.textViewDate);
+
         // Set swipeListener for Task Bar
         SwipeDownDateListener swipeListener = new SwipeDownDateListener(this);
         findViewById(R.id.textViewTasks).setOnTouchListener(swipeListener);
 
         // Set touchListener to show "+" button
         TouchDateListener touchDateListener = new TouchDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
-        findViewById(R.id.textViewDate).setOnTouchListener(touchDateListener);
+        dateView.setOnTouchListener(touchDateListener);
+
+        // Update date
+        timeClock.postDelayed(minChange, 0);
 
         // Set touch listener to hide "+" button
         findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
@@ -217,4 +240,6 @@ public class MainActivity extends AppCompatActivity {
         // TODO Hide this button
         // TODO CLEAR TOMORROW_ARRAY IN VAULT
     }
+
+
 }

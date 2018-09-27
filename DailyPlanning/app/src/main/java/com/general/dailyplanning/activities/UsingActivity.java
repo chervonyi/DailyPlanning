@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.general.dailyplanning.R;
+import com.general.dailyplanning.components.DateComposer;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
 import com.general.dailyplanning.listeners.MovingTaskListener;
 import com.general.dailyplanning.listeners.TouchSwipeDateListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class UsingActivity extends AppCompatActivity {
 
@@ -32,6 +37,20 @@ public class UsingActivity extends AppCompatActivity {
     private ArrayList<MovingTaskListener> listeners = new ArrayList<>();
 
     private ArrayList<Task> tasks = new ArrayList<>();
+
+    private TextView dateView;
+
+    // Clock
+    private final Handler timeClock = new Handler();
+    private Runnable minChange = new Runnable() {
+        public void run() {
+            String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
+            String text = time + " " + DateComposer.getDate();
+            dateView.setText(text);
+            // Update time every 10 sec
+            timeClock.postDelayed(this, 10000);
+        }
+    };
 
     @TargetApi(Build.VERSION_CODES.M)
     @SuppressLint("ClickableViewAccessibility")
@@ -54,6 +73,10 @@ public class UsingActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        dateView = findViewById(R.id.textViewDate);
+        // Update date
+        timeClock.postDelayed(minChange, 0);
 
         // Set touch listener to show "+" button
         TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
