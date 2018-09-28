@@ -35,6 +35,7 @@ public class CreatingActivity extends AppCompatActivity {
     // Views
     private EditText newTask;
     private Button buttonSelectTime;
+    private TextView dateView;
 
     // Extras variables
     private int type;
@@ -42,17 +43,17 @@ public class CreatingActivity extends AppCompatActivity {
     // States
     private boolean timeSelected = false;
 
-    private TextView dateView;
-
     // Clock
     private final Handler timeClock = new Handler();
     private Runnable minChange = new Runnable() {
         public void run() {
             String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
+            int seconds = Integer.parseInt(new SimpleDateFormat("ss", Locale.US).format(new Date()));
             String text = time + " " + DateComposer.getDate();
             dateView.setText(text);
-            // Update time every 10 sec
-            timeClock.postDelayed(this, 10000);
+
+            // Update time every hh:mm:00 second
+            timeClock.postDelayed(this, (60 - seconds) * 1000);
         }
     };
 
@@ -189,7 +190,7 @@ public class CreatingActivity extends AppCompatActivity {
 
         // Save vault
         // TODO: Move Vault's saving into onClose() method
-        DataManipulator.saving(this, "data", vault);
+        DataManipulator.saving(this,"data", vault);
 
         startActivity(intent);
     }

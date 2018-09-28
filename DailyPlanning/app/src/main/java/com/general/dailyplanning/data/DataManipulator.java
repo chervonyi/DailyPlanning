@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class DataManipulator {
+
     /**
      * Saving serializable object into phone's memory
      * @param context - required

@@ -74,8 +74,6 @@
                 android:textColor="@color/fontWhite"
                 android:textSize="11pt" />
 
-
-
             <FrameLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent">
@@ -166,15 +164,4 @@
 
 
 
-<!--add white border 1px-->
-    <!--<TextView-->
-    <!--android:id="@+id/textViewNumTasks"-->
-    <!--android:layout_width="20dp"-->
-    <!--android:layout_height="20dp"-->
-    <!--android:background="@drawable/count"-->
-    <!--android:fontFamily="@font/oswald"-->
-    <!--android:gravity="center_vertical|center"-->
-    <!--android:text="3"-->
-    <!--android:textColor="@color/fontWhite"-->
-    <!--android:textSize="13sp"-->
-    <!--/>-->
+

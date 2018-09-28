@@ -30,11 +30,12 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-
+    // Vars
     private ArrayList<Task> tasks = new ArrayList<>();
     private ArrayList<String> toDoList = new ArrayList<>();
     private ArrayList<MovingToDoListListener> listeners = new ArrayList<>();
 
+    // Views
     private TextView dateView;
 
     // Clock
@@ -42,10 +43,12 @@ public class MainActivity extends AppCompatActivity {
     private Runnable minChange = new Runnable() {
         public void run() {
             String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
+            int seconds = Integer.parseInt(new SimpleDateFormat("ss", Locale.US).format(new Date()));
             String text = time + " " + DateComposer.getDate();
             dateView.setText(text);
-            // Update time every 10 sec
-            timeClock.postDelayed(this, 10000);
+
+            /// Update time every hh:mm:00 second
+            timeClock.postDelayed(this, (60 - seconds) * 1000);
         }
     };
 
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     vault.removeFromToDoList(idTask);
 
                     // Save vault
-                    DataManipulator.saving(context, "data", vault);
+                    DataManipulator.saving(context,"data", vault);
 
                     // Refresh panel with new data
                     updateToDoList();
@@ -187,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                     context.startActivity(intent);
 
                     vault.removeFromToDoList(idTask);
-                    DataManipulator.saving(context, "data", vault);
+                    DataManipulator.saving(context,"data", vault);
 
                     // Refresh panel with new data
                     updateToDoList();

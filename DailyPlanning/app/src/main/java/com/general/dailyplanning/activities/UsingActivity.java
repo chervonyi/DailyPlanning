@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,33 +32,47 @@ import java.util.Date;
 import java.util.Locale;
 
 public class UsingActivity extends AppCompatActivity {
-
-    private boolean taskOpened = false;
-
+    // Vars
     private ArrayList<MovingTaskListener> listeners = new ArrayList<>();
-
     private ArrayList<Task> tasks = new ArrayList<>();
+    private Context context;
 
+    // Views
     private TextView dateView;
+
+    // States
+    private boolean taskOpened = false;
 
     // Clock
     private final Handler timeClock = new Handler();
     private Runnable minChange = new Runnable() {
         public void run() {
             String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
+            int seconds = Integer.parseInt(new SimpleDateFormat("ss", Locale.US).format(new Date()));
             String text = time + " " + DateComposer.getDate();
             dateView.setText(text);
-            // Update time every 10 sec
-            timeClock.postDelayed(this, 10000);
+
+            Vault vault = Vault.getInstance();
+
+            // Remove all overdue tasks
+            if (vault.pushTimeLine(time)) {
+                DataManipulator.saving(context,"data", vault);
+                updateTaskList();
+            }
+
+            // Update time every hh:mm:00 second
+            timeClock.postDelayed(this, (60 - seconds) * 1000);
+
         }
     };
 
-    @TargetApi(Build.VERSION_CODES.M)
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_using);
+
+        context = this;
 
         findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -174,7 +189,7 @@ public class UsingActivity extends AppCompatActivity {
                     vault.remove(idTask);
 
                     // Save vault
-                    DataManipulator.saving(context, "data", vault);
+                    DataManipulator.saving(context,"data", vault);
 
                     updateTaskList();
                     // TODO: Add anim

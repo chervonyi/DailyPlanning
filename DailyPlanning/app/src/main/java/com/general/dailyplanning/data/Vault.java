@@ -1,5 +1,10 @@
 package com.general.dailyplanning.data;
 
+import android.util.Log;
+
+import com.general.dailyplanning.activities.MainActivity;
+import com.general.dailyplanning.components.Vibrate;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -31,9 +36,10 @@ public class Vault implements Serializable {
         int i = 0;
         Task curr;
         int size = array.size();
+        int newTaskTime = makeNum(h, m);
         while(i < size) {
             curr = array.get(i);
-            if (makeNum(h, m) < makeNum(curr.getHours(), curr.getMinutes())) {
+            if (newTaskTime < makeNum(curr.getHours(), curr.getMinutes())) {
                 array.add(i, newTask);
                 added = true;
                 break;
@@ -56,7 +62,7 @@ public class Vault implements Serializable {
      * @param m - minutes
      * @return an absolute number which can be used for sorting
      */
-    private int makeNum (int h, int m) {
+    private int makeNum(int h, int m) {
         return h * 100 + m;
     }
 
@@ -100,11 +106,12 @@ public class Vault implements Serializable {
         instance = vault;
     }
 
-    // Getters:
+    // Getter:
     public ArrayList<Task> getArray() {
         return array;
     }
 
+    // Getter:
     public ArrayList<String> getTomorrowArray() {
         return tomorrowArray;
     }
@@ -112,5 +119,27 @@ public class Vault implements Serializable {
 
     public static Vault getInstance() {
         return instance;
+    }
+
+    /**
+     * Removes all overdue tasks
+     * @param time - current time in string (Like: "11:24")
+     */
+    public boolean pushTimeLine(String time) {
+        int h = Integer.parseInt(time.substring(0, 2));
+        int m = Integer.parseInt(time.substring(3, 5));
+        int currTime = makeNum(h, m);
+
+        boolean removed = false;
+        for (int i = 0; i < array.size(); i++) {
+            if (currTime > makeNum(array.get(i).getHours(), array.get(i).getMinutes())) {
+                // TODO Make notification
+                array.remove(i);
+                removed = true;
+            } else {
+                break;
+            }
+        }
+        return removed;
     }
 }
