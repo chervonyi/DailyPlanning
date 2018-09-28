@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Views
     private TextView dateView;
+    private Button buttonSave;
+    private TextView manualView;
 
     // Clock
     private final Handler timeClock = new Handler();
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         Converter.setContext(this);
 
         dateView = findViewById(R.id.textViewDate);
+        buttonSave = findViewById(R.id.buttonSave);
+        manualView = findViewById(R.id.textViewStart);
 
         // Set swipeListener for Task Bar
         SwipeDownDateListener swipeListener = new SwipeDownDateListener(this);
@@ -109,6 +113,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Filling up ScrollView with tasks
         updateTasksList();
+
+        // Show or hide "Save" button and Start-Manual
+        if (tasks.size() > 0) {
+            buttonSave.setVisibility(View.VISIBLE);
+            manualView.setVisibility(View.INVISIBLE);
+        } else {
+            buttonSave.setVisibility(View.INVISIBLE);
+            manualView.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -244,7 +257,6 @@ public class MainActivity extends AppCompatActivity {
     public void onClickSave(View view) {
         Intent intent = new Intent(this, UsingActivity.class);
         startActivity(intent);
-        // TODO Hide this button
         // TODO CLEAR TOMORROW_ARRAY IN VAULT
     }
 

@@ -113,11 +113,26 @@
                     android:background="@drawable/button_add"
                     android:fontFamily="@font/oswald"
                     android:onClick="onClickAddNewTask"
-                    android:text="+"
+                    android:text="@string/add_button"
                     android:textColor="@color/fontWhite"
                     android:textSize="23pt"
                     android:visibility="invisible"
                     tools:layout_editor_absoluteX="155dp" />
+
+                <TextView
+                    android:id="@+id/textViewStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="200dp"
+                    android:background="@color/backgroundLightGrey"
+                    android:fontFamily="@font/oswald"
+                    android:gravity="center_vertical|center"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:text="@string/start"
+                    android:textColor="@color/fontWhite"
+                    android:textSize="8pt"
+                    android:visibility="visible" />
 
             </FrameLayout>
 
@@ -131,23 +146,9 @@
                 android:textColor="@color/fontWhite"
                 android:text="@string/saveButton"
                 android:onClick="onClickSave"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:visibility="invisible"/>
 
-            <!--Move to ScrollView-->
-            <TextView
-                android:id="@+id/textViewStart"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="150dp"
-                android:background="@color/backgroundLightGrey"
-                android:fontFamily="@font/oswald"
-                android:gravity="center_vertical|center"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
-                android:text="@string/start"
-                android:textColor="@color/fontWhite"
-                android:textSize="8pt"
-                android:visibility="invisible" />
 
         </LinearLayout>
 

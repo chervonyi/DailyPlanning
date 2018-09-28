@@ -192,7 +192,7 @@ public class UsingActivity extends AppCompatActivity {
                     DataManipulator.saving(context,"data", vault);
 
                     updateTaskList();
-                    // TODO: Add anim
+                    // TODO: Add anim (Maybe set visibility for removed element like "GONE")
                 }
             });
             innerLayout.addView(buttonDelete);

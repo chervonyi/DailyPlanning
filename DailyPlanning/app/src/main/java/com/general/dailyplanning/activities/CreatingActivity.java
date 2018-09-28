@@ -167,7 +167,6 @@ public class CreatingActivity extends AppCompatActivity {
         Vault vault = Vault.getInstance();
         Intent intent;
         switch (type) {
-            case CREATING_NEW:
             case EDITING:
                 intent = new Intent(this, UsingActivity.class);
                 vault.add(new Task(titleOfTask));
@@ -178,8 +177,13 @@ public class CreatingActivity extends AppCompatActivity {
                 vault.addTomorrow(titleOfTask);
                 break;
 
+            case CREATING_NEW:
             case CREATING_FROM_TODO_LIST:
-                intent = new Intent(this, MainActivity.class);
+                if (vault.getTomorrowArray().size() == 0) {
+                    intent = new Intent(this, UsingActivity.class);
+                } else {
+                    intent = new Intent(this, MainActivity.class);
+                }
                 vault.add(new Task(titleOfTask));
                 break;
 
