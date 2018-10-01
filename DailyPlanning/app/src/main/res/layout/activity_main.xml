@@ -15,15 +15,15 @@
         <LinearLayout
             android:id="@+id/mainLayout"
             android:layout_width="match_parent"
-            android:layout_height="1300dp"
-            android:layout_marginTop="-591dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
 
             <LinearLayout
+                android:id="@+id/topLayout"
                 android:layout_width="match_parent"
-                android:layout_height="591dp"
-                android:background="@color/backgroundGrey"
+                android:layout_height="wrap_content"
+                android:background="@color/lightBlue"
                 android:orientation="vertical">
 
                 <TextView
@@ -39,7 +39,7 @@
                 <ScrollView
                     android:id="@+id/scrollViewToDoList"
                     android:layout_width="match_parent"
-                    android:layout_height="472dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:overScrollMode="never">
 
@@ -47,26 +47,25 @@
                         android:id="@+id/toDoLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"/>
+                        android:orientation="vertical" />
                 </ScrollView>
 
                 <TextView
                     android:id="@+id/textViewNothing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="200dp"
                     android:fontFamily="@font/oswald"
                     android:gravity="center_vertical|center"
                     android:text="@string/nothing"
                     android:textColor="@color/fontWhite"
                     android:textSize="8pt"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewTasks"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="0dp"
                 android:background="@drawable/header_corner"
                 android:fontFamily="@font/oswald"
                 android:gravity="center_vertical|center"
@@ -75,8 +74,10 @@
                 android:textSize="11pt" />
 
             <FrameLayout
+                android:id="@+id/bottomLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent">
+                android:background="@color/lightRed">
 
                 <TextView
                     android:id="@+id/textViewDate"
@@ -99,8 +100,7 @@
                         android:id="@+id/scrollLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                    </LinearLayout>
+                        android:orientation="vertical"/>
                 </ScrollView>
 
                 <Button
@@ -108,8 +108,8 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="50dp"
                     android:layout_height="70dp"
-                    android:layout_marginTop="30dp"
                     android:layout_gravity="top|center"
+                    android:layout_marginTop="30dp"
                     android:background="@drawable/button_add"
                     android:fontFamily="@font/oswald"
                     android:onClick="onClickAddNewTask"
@@ -139,20 +139,34 @@
             <Button
                 android:id="@+id/buttonSave"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_green"
+                android:layout_height="0dp"
                 android:layout_gravity="bottom"
+                android:background="@drawable/button_green"
                 android:fontFamily="@font/sansation"
-                android:textColor="@color/fontWhite"
-                android:text="@string/saveButton"
                 android:onClick="onClickSave"
+                android:text="@string/saveButton"
+                android:textColor="@color/fontWhite"
                 android:textSize="14sp"
-                android:visibility="invisible"/>
+                android:visibility="visible" />
 
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
 </android.support.constraint.ConstraintLayout>
 

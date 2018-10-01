@@ -3,11 +3,14 @@ package com.general.dailyplanning.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView dateView;
     private Button buttonSave;
     private TextView manualView;
+    private LinearLayout mainLayout;
+    private TextView taskView;
 
     // Clock
     private final Handler timeClock = new Handler();
@@ -61,16 +66,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Set context for future using
-        Converter.setContext(this);
+        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
+        converter.setUnit(1 - 0.078);
 
         dateView = findViewById(R.id.textViewDate);
         buttonSave = findViewById(R.id.buttonSave);
         manualView = findViewById(R.id.textViewStart);
+        mainLayout = findViewById(R.id.mainLayout);
+        taskView = findViewById(R.id.textViewTasks);
+
+        // Set size
+        mainLayout.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
+                converter.getHeight(2.085),
+                0,
+                -converter.getHeight(1),
+                0,
+                0));
+
+        findViewById(R.id.topLayout).getLayoutParams().height = converter.getHeight(1);
+        findViewById(R.id.bottomLayout).getLayoutParams().height = converter.getHeight(1 - 0.078);
+        taskView.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
+                converter.getHeight(0.083), 0,0 ,0 ,0));
+        buttonSave.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
+                converter.getHeight(0.083), 0,0 ,0 ,0));
+
+
 
         // Set swipeListener for Task Bar
-        SwipeDownDateListener swipeListener = new SwipeDownDateListener(this);
-        findViewById(R.id.textViewTasks).setOnTouchListener(swipeListener);
+        taskView.setOnTouchListener(new SwipeDownDateListener(this));
 
         // Set touchListener to show "+" button
         TouchDateListener touchDateListener = new TouchDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
@@ -260,5 +283,46 @@ public class MainActivity extends AppCompatActivity {
         // TODO CLEAR TOMORROW_ARRAY IN VAULT
     }
 
+
+
+    private void testing() {
+        String TAG = "testing";
+
+        Converter cont = new Converter(getWindowManager().getDefaultDisplay());
+        cont.setUnit(1);
+        Log.d(TAG, "unit of height = 1");
+        Log.d(TAG, "height 1: " + cont.getHeight(1));
+        Log.d(TAG, "height 0.5: " + cont.getHeight(0.5));
+        Log.d(TAG, "height 2: " + cont.getHeight(2));
+
+
+        cont.setUnit(2);
+        Log.d(TAG, "unit of height = 2");
+        Log.d(TAG, "height 1: " + cont.getHeight(1));
+        Log.d(TAG, "height 0.5: " + cont.getHeight(0.5));
+        Log.d(TAG, "height 2: " + cont.getHeight(2));
+
+        /*
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        Log.d(TAG, "height: " + size.x);
+        Log.d(TAG, "width: " + size.y);
+        */
+
+        // setAbsoluteHeight(size.x)
+        // getHeight(1, Type.WEIGHT)
+        // getHeight(100, Type.PERCENT) 100% of the screen
+        // getHeight(590, Type.DP)
+        //
+        // - висота для верхньої прихованої частини
+        //
+
+
+
+
+    }
 
 }
