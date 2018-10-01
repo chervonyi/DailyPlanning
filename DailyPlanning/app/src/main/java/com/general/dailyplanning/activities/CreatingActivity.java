@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.general.dailyplanning.components.Converter;
 import com.general.dailyplanning.components.DateComposer;
 import com.general.dailyplanning.data.*;
 
@@ -36,6 +38,7 @@ public class CreatingActivity extends AppCompatActivity {
     private EditText newTask;
     private Button buttonSelectTime;
     private TextView dateView;
+    private Button buttonSave;
 
     // Extras variables
     private int type;
@@ -66,12 +69,27 @@ public class CreatingActivity extends AppCompatActivity {
         dateView = findViewById(R.id.textViewDate);
         newTask = findViewById(R.id.editNewTaskTitle);
         buttonSelectTime = findViewById(R.id.buttonSelectTime);
+        buttonSave = findViewById(R.id.buttonSave);
+
+        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
 
         // Update date
         timeClock.postDelayed(minChange, 0);
 
         Intent intent = getIntent();
         type = intent.getIntExtra("type", -1);
+
+        // Set actual sizes
+        newTask.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, converter.getHeight(0.1),
+                20, 50, 20, 0));
+
+        buttonSelectTime.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
+                0, converter.getHeight(0.05), 0, 0));
+
+        // TODO: Add editView and SelectTimebtn to separate LinearLayout with static height (To fix moving up and down of btnSave)
+        buttonSave.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
+                0, converter.getHeight(0.39), 0, 0));
+
 
         // Upload extras for different activities purpose
         switch (type) {
@@ -85,8 +103,7 @@ public class CreatingActivity extends AppCompatActivity {
                 break;
 
             case CREATING_NEW_ON_TOMORROW:
-                Button btn = findViewById(R.id.buttonSave);
-                btn.setText("REMIND TOMORROW");
+                buttonSave.setText("REMIND TOMORROW");
                 break;
 
             case CREATING_FROM_TODO_LIST:

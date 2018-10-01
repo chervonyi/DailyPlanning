@@ -5,7 +5,6 @@ import android.view.Display;
 import android.widget.LinearLayout;
 
 public class Converter {
-    private int unitWeight = 0;
     private Display display;
     private int height;
 
@@ -17,11 +16,11 @@ public class Converter {
     }
 
     public void setUnit(double sole) {
-        unitWeight = (int) Math.round(sole * height);
+        height = (int) Math.round(sole * height);
     }
 
     public int getHeight(double weight) {
-        return (int) Math.round(weight * unitWeight);
+        return (int) Math.round(weight * height);
     }
 
 
