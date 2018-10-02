@@ -23,7 +23,7 @@
                 android:id="@+id/topLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/lightBlue"
+                android:background="@color/backgroundGrey"
                 android:orientation="vertical">
 
                 <TextView
@@ -76,8 +76,7 @@
             <FrameLayout
                 android:id="@+id/bottomLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightRed">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/textViewDate"

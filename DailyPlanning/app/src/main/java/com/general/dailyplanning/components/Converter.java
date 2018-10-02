@@ -7,12 +7,14 @@ import android.widget.LinearLayout;
 public class Converter {
     private Display display;
     private int height;
+    private int width;
 
     public Converter (Display display) {
         this.display = display;
         Point size = new Point();
         display.getSize(size);
         height = size.y;
+        width = size.x;
     }
 
     public void setUnit(double sole) {
@@ -23,6 +25,7 @@ public class Converter {
         return (int) Math.round(weight * height);
     }
 
+    public int getWidth(double weight) { return (int) Math.round(weight * width); }
 
     public LinearLayout.LayoutParams getParam(int width, int height, int left, int top, int right, int bottom) {
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width, height);

@@ -66,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
-        converter.setUnit(1 - 0.078);
+
 
         dateView = findViewById(R.id.textViewDate);
         buttonSave = findViewById(R.id.buttonSave);
@@ -76,20 +75,7 @@ public class MainActivity extends AppCompatActivity {
         taskView = findViewById(R.id.textViewTasks);
 
         // Set size
-        mainLayout.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
-                converter.getHeight(2.085),
-                0,
-                -converter.getHeight(1),
-                0,
-                0));
-
-        findViewById(R.id.topLayout).getLayoutParams().height = converter.getHeight(1);
-        findViewById(R.id.bottomLayout).getLayoutParams().height = converter.getHeight(1 - 0.078);
-        taskView.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
-                converter.getHeight(0.083), 0,0 ,0 ,0));
-        buttonSave.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
-                converter.getHeight(0.083), 0,0 ,0 ,0));
-
+        setSizes();
 
 
         // Set swipeListener for Task Bar
@@ -283,45 +269,26 @@ public class MainActivity extends AppCompatActivity {
         // TODO CLEAR TOMORROW_ARRAY IN VAULT
     }
 
+    /**
+     * Sets actual size to all components in this Activity using Converter
+     */
+    private void setSizes() {
+        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
+        converter.setUnit(1 - 0.078);
 
+        mainLayout.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
+                converter.getHeight(2.085),
+                0,
+                -converter.getHeight(1),
+                0,
+                0));
 
-    private void testing() {
-        String TAG = "testing";
-
-        Converter cont = new Converter(getWindowManager().getDefaultDisplay());
-        cont.setUnit(1);
-        Log.d(TAG, "unit of height = 1");
-        Log.d(TAG, "height 1: " + cont.getHeight(1));
-        Log.d(TAG, "height 0.5: " + cont.getHeight(0.5));
-        Log.d(TAG, "height 2: " + cont.getHeight(2));
-
-
-        cont.setUnit(2);
-        Log.d(TAG, "unit of height = 2");
-        Log.d(TAG, "height 1: " + cont.getHeight(1));
-        Log.d(TAG, "height 0.5: " + cont.getHeight(0.5));
-        Log.d(TAG, "height 2: " + cont.getHeight(2));
-
-        /*
-
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        Log.d(TAG, "height: " + size.x);
-        Log.d(TAG, "width: " + size.y);
-        */
-
-        // setAbsoluteHeight(size.x)
-        // getHeight(1, Type.WEIGHT)
-        // getHeight(100, Type.PERCENT) 100% of the screen
-        // getHeight(590, Type.DP)
-        //
-        // - висота для верхньої прихованої частини
-        //
-
-
-
+        findViewById(R.id.topLayout).getLayoutParams().height = converter.getHeight(1);
+        findViewById(R.id.bottomLayout).getLayoutParams().height = converter.getHeight(1 - 0.078);
+        taskView.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
+                converter.getHeight(0.083), 0,0 ,0 ,0));
+        buttonSave.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
+                converter.getHeight(0.083), 0,0 ,0 ,0));
 
     }
 

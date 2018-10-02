@@ -15,10 +15,15 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.general.dailyplanning.R;
+import com.general.dailyplanning.components.Converter;
 import com.general.dailyplanning.components.DateComposer;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
@@ -39,6 +44,10 @@ public class UsingActivity extends AppCompatActivity {
 
     // Views
     private TextView dateView;
+    private TextView buttonRemind;
+    private RelativeLayout layoutDate;
+    private ScrollView scrollView;
+    private Button buttonAddNewTask;
 
     // States
     private boolean taskOpened = false;
@@ -74,7 +83,15 @@ public class UsingActivity extends AppCompatActivity {
 
         context = this;
 
-        findViewById(R.id.scrollView).setOnTouchListener(new View.OnTouchListener() {
+        layoutDate = findViewById(R.id.layoutDate);
+        dateView = findViewById(R.id.textViewDate);
+        buttonRemind = findViewById(R.id.buttonRemind);
+        scrollView = findViewById(R.id.scrollView);
+        buttonAddNewTask = findViewById(R.id.buttonAddNewTask);
+
+        setSizes();
+
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // Hide "+" button
@@ -89,13 +106,12 @@ public class UsingActivity extends AppCompatActivity {
             }
         });
 
-        dateView = findViewById(R.id.textViewDate);
         // Update date
         timeClock.postDelayed(minChange, 0);
 
         // Set touch listener to show "+" button
-        TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
-        findViewById(R.id.layoutDate).setOnTouchListener(swdl);
+        TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, buttonAddNewTask);
+        layoutDate.setOnTouchListener(swdl);
 
         // Loading data
         Vault vault = DataManipulator.loading(this, "data");
@@ -240,5 +256,36 @@ public class UsingActivity extends AppCompatActivity {
 
     public void setTaskOpened(boolean b) {
         taskOpened = b;
+    }
+
+    /**
+     * Sets actual size to all components in this Activity using Converter
+     */
+    private void setSizes() {
+        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
+
+        FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) layoutDate.getLayoutParams();
+        params1.width = converter.getWidth(2);
+        params1.topMargin = converter.getHeight(0.02);
+        layoutDate.setLayoutParams(params1);
+
+        RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) dateView.getLayoutParams();
+        params2.width = converter.getWidth(1);
+        params2.height = converter.getHeight(0.078);
+        dateView.setLayoutParams(params2);
+
+        params2 = (RelativeLayout.LayoutParams) buttonRemind.getLayoutParams();
+        params2.width = converter.getWidth(1);
+        params2.height = converter.getHeight(0.078);
+        buttonRemind.setLayoutParams(params2);
+
+        FrameLayout.LayoutParams params3 = (FrameLayout.LayoutParams) scrollView.getLayoutParams();
+        params3.topMargin = converter.getHeight(0.15);
+        scrollView.setLayoutParams(params3);
+
+        params3 = (FrameLayout.LayoutParams) buttonAddNewTask.getLayoutParams();
+        params3.topMargin = converter.getHeight(0.078);
+        buttonAddNewTask.setLayoutParams(params3);
+
     }
 }

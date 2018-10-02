@@ -71,24 +71,13 @@ public class CreatingActivity extends AppCompatActivity {
         buttonSelectTime = findViewById(R.id.buttonSelectTime);
         buttonSave = findViewById(R.id.buttonSave);
 
-        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
+        setSizes();
 
         // Update date
         timeClock.postDelayed(minChange, 0);
 
         Intent intent = getIntent();
         type = intent.getIntExtra("type", -1);
-
-        // Set actual sizes
-        newTask.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, converter.getHeight(0.1),
-                20, 50, 20, 0));
-
-        buttonSelectTime.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
-                0, converter.getHeight(0.05), 0, 0));
-
-        // TODO: Add editView and SelectTimebtn to separate LinearLayout with static height (To fix moving up and down of btnSave)
-        buttonSave.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
-                0, converter.getHeight(0.39), 0, 0));
 
 
         // Upload extras for different activities purpose
@@ -214,6 +203,23 @@ public class CreatingActivity extends AppCompatActivity {
         DataManipulator.saving(this,"data", vault);
 
         startActivity(intent);
+    }
+
+    /**
+     * Sets actual size to all components in this Activity using Converter
+     */
+    private void setSizes() {
+        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
+
+        newTask.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, converter.getHeight(0.1),
+                20, 50, 20, 0));
+
+        buttonSelectTime.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
+                0, converter.getHeight(0.05), 0, 0));
+
+        // TODO: Add editView and SelectTimebtn to separate LinearLayout with static height (To fix moving up and down of btnSave)
+        buttonSave.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
+                0, converter.getHeight(0.39), 0, 0));
     }
 }
 
