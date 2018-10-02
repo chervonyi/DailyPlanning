@@ -7,14 +7,15 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 
 import com.general.dailyplanning.activities.MainActivity;
+import com.general.dailyplanning.components.Converter;
 
 public class SwipeDownDateListener implements OnTouchListener {
     // Constants
     private final int USUAL_POS = 0x000001;
     private final int SWIPED_POS = 0x000002;
-    private int HEIGHT_HIDDEN_PANEL = 1180;
-    private int SWIPE_LINE_1 = -1000;
-    private int SWIPE_LINE_2 = -100;
+    private int HEIGHT_HIDDEN_PANEL;
+    private int SWIPE_LINE_1;
+    private int SWIPE_LINE_2;
 
     // Vars
     private int currPosition = USUAL_POS;
@@ -30,6 +31,11 @@ public class SwipeDownDateListener implements OnTouchListener {
 
     public SwipeDownDateListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+        Converter converter = new Converter(mainActivity.getWindowManager().getDefaultDisplay());
+        converter.setUnit(1 - 0.078);
+        HEIGHT_HIDDEN_PANEL = converter.getHeight(1);
+        SWIPE_LINE_1 = -converter.getHeight(0.85);
+        SWIPE_LINE_2 = -converter.getHeight(0.1);
     }
 
     @Override
