@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.general.dailyplanning.R;
+import com.general.dailyplanning.components.Converter;
 import com.general.dailyplanning.components.DateComposer;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set context for future using
+        Converter.setContext(this);
 
         dateView = findViewById(R.id.textViewDate);
         buttonSave = findViewById(R.id.buttonSave);
@@ -257,13 +260,5 @@ public class MainActivity extends AppCompatActivity {
         // TODO CLEAR TOMORROW_ARRAY IN VAULT
     }
 
-
-
-    /*
-    *
-    *  TEST BLOCK
-    *
-    *
-    * */
 
 }
