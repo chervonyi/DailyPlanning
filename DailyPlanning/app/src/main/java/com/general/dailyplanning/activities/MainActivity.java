@@ -3,11 +3,14 @@ package com.general.dailyplanning.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView dateView;
     private Button buttonSave;
     private TextView manualView;
+    private LinearLayout mainLayout;
+    private TextView taskView;
 
     // Clock
     private final Handler timeClock = new Handler();
@@ -61,16 +66,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Set context for future using
-        Converter.setContext(this);
+
 
         dateView = findViewById(R.id.textViewDate);
         buttonSave = findViewById(R.id.buttonSave);
         manualView = findViewById(R.id.textViewStart);
+        mainLayout = findViewById(R.id.mainLayout);
+        taskView = findViewById(R.id.textViewTasks);
+
+        // Set size
+        setSizes();
+
 
         // Set swipeListener for Task Bar
-        SwipeDownDateListener swipeListener = new SwipeDownDateListener(this);
-        findViewById(R.id.textViewTasks).setOnTouchListener(swipeListener);
+        taskView.setOnTouchListener(new SwipeDownDateListener(this));
 
         // Set touchListener to show "+" button
         TouchDateListener touchDateListener = new TouchDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
@@ -260,5 +269,26 @@ public class MainActivity extends AppCompatActivity {
         // TODO CLEAR TOMORROW_ARRAY IN VAULT
     }
 
+    /**
+     * Sets actual size to all components in this Activity using Converter
+     */
+    private void setSizes() {
+        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
+        converter.setUnit(1 - 0.078);
 
+        mainLayout.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
+                converter.getHeight(2.085),
+                0,
+                -converter.getHeight(1),
+                0,
+                0));
+
+        findViewById(R.id.topLayout).getLayoutParams().height = converter.getHeight(1);
+        findViewById(R.id.bottomLayout).getLayoutParams().height = converter.getHeight(1 - 0.078);
+        taskView.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
+                converter.getHeight(0.083), 0,0 ,0 ,0));
+        buttonSave.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
+                converter.getHeight(0.083), 0,0 ,0 ,0));
+
+    }
 }

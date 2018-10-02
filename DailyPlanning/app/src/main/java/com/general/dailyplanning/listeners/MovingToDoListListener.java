@@ -1,6 +1,7 @@
 package com.general.dailyplanning.listeners;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -9,13 +10,14 @@ import android.widget.LinearLayout;
 
 import com.general.dailyplanning.activities.MainActivity;
 import com.general.dailyplanning.activities.UsingActivity;
+import com.general.dailyplanning.components.Converter;
 import com.general.dailyplanning.components.Vibrate;
 
 public class MovingToDoListListener implements OnTouchListener {
     // Constants
     private final int LONG_PRESS_TIMEOUT = 500;
     private final int MAX_RADIUS_OF_TOUCH = 50;
-    private final int SWIPED_POS = -260;
+    private int SWIPED_POS;
     private final int USUAL_POS = 0;
 
     private int currPosition = USUAL_POS;
@@ -29,6 +31,8 @@ public class MovingToDoListListener implements OnTouchListener {
 
     public MovingToDoListListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+        Converter converter = new Converter(mainActivity.getWindowManager().getDefaultDisplay());
+        SWIPED_POS = -converter.getWidth(0.36);
     }
 
     // Timer for checking LongTouch

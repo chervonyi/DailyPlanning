@@ -14,13 +14,14 @@ import android.widget.RelativeLayout;
 
 import com.general.dailyplanning.activities.CreatingActivity;
 import com.general.dailyplanning.activities.UsingActivity;
+import com.general.dailyplanning.components.Converter;
 import com.general.dailyplanning.components.Vibrate;
 
 public class TouchSwipeDateListener implements View.OnTouchListener {
     // Constants
-    private static final int SWIPED_POS = -720;
     private static final int USUAL_POS = 0;
-    private  final int SWIPE_BORDER = 200;
+    private static int SWIPED_POS;
+    private int SWIPE_BORDER;
 
     // Vars
     private static RelativeLayout relativeLayout;
@@ -38,6 +39,9 @@ public class TouchSwipeDateListener implements View.OnTouchListener {
     public TouchSwipeDateListener(UsingActivity usingActivity, Button buttonAdd) {
         this.usingActivity = usingActivity;
         TouchSwipeDateListener.buttonAdd = buttonAdd;
+        Converter converter = new Converter(usingActivity.getWindowManager().getDefaultDisplay());
+        SWIPE_BORDER = converter.getWidth(0.28);
+        SWIPED_POS = -converter.getWidth(1);
     }
 
     @Override
