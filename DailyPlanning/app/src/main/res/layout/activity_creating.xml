@@ -28,7 +28,8 @@
         <EditText
             android:id="@+id/editNewTaskTitle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
             android:background="@drawable/newtask"
             android:fontFamily="@font/sansation"
             android:textAlignment="center"
@@ -36,8 +37,10 @@
             android:textColorHint="@color/fontLightGrey"
             android:textColor="@color/fontWhite"
             android:textSize="18sp"
-            android:ems="10"
-            android:inputType="textCapSentences" />
+            android:padding="15dp"
+            android:maxLength="60"
+            android:inputType="textCapSentences|textMultiLine"
+            android:imeOptions="actionGo"/>
 
         <Button
             android:id="@+id/buttonSelectTime"

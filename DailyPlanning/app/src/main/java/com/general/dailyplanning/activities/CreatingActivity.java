@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,14 +73,16 @@ public class CreatingActivity extends AppCompatActivity {
         buttonSelectTime = findViewById(R.id.buttonSelectTime);
         buttonSave = findViewById(R.id.buttonSave);
 
+
         setSizes();
+
+        newTask.setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
         // Update date
         timeClock.postDelayed(minChange, 0);
 
         Intent intent = getIntent();
         type = intent.getIntExtra("type", -1);
-
 
         // Upload extras for different activities purpose
         switch (type) {
@@ -211,8 +215,8 @@ public class CreatingActivity extends AppCompatActivity {
     private void setSizes() {
         Converter converter = new Converter(getWindowManager().getDefaultDisplay());
 
-        newTask.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, converter.getHeight(0.1),
-                20, 50, 20, 0));
+        newTask.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
+                       20, 50, 20, 0));
 
         buttonSelectTime.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
                 0, converter.getHeight(0.05), 0, 0));

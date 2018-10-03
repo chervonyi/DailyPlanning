@@ -5,12 +5,10 @@ import android.view.Display;
 import android.widget.LinearLayout;
 
 public class Converter {
-    private Display display;
     private int height;
     private int width;
 
     public Converter (Display display) {
-        this.display = display;
         Point size = new Point();
         display.getSize(size);
         height = size.y;
