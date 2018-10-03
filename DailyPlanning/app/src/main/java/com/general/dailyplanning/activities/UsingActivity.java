@@ -137,6 +137,8 @@ public class UsingActivity extends AppCompatActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, 100);
         params.setMargins(0,10,0,0);
 
+        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
+
         LinearLayout scrollLayout = findViewById(R.id.scrollLayout);
         // Clear a body
         if (scrollLayout.getChildCount() > 0) {
@@ -148,14 +150,13 @@ public class UsingActivity extends AppCompatActivity {
             // Task Block
             view = new TextView(this);
             view.setText(task.toString());
+            view.setLayoutParams(new LinearLayout.LayoutParams(converter.getWidth(1), LinearLayout.LayoutParams.WRAP_CONTENT));
             view.setBackgroundColor(getResources().getColor(R.color.backgroundGrey));
             view.setTextSize(18);
-            view.setHeight(150);
-            view.setWidth(720);
             view.setTextColor(getResources().getColor(R.color.fontWhite));
             view.setBackground(ContextCompat.getDrawable(this, R.drawable.task_planning));
             view.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            view.setPadding(70, 0, 70, 0);
+            view.setPadding(70, 40, 70, 40);
             view.setTypeface(ResourcesCompat.getFont(this, R.font.light)); // Roboto-Light
             movingTaskListener = new MovingTaskListener(this);
             listeners.add(movingTaskListener);
@@ -223,7 +224,7 @@ public class UsingActivity extends AppCompatActivity {
      */
     public void onClickAddNewTask(View view) {
         Intent intent = new Intent(this, CreatingActivity.class);
-        intent.putExtra("type", CreatingActivity.CREATING_NEW);
+        intent.putExtra("type", CreatingActivity.CREATING_FROM_USING);
         startActivity(intent);
         TouchSwipeDateListener.hide();
     }

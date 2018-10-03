@@ -35,6 +35,8 @@ public class CreatingActivity extends AppCompatActivity {
     public final static int EDITING = 0x0000002;
     public final static int CREATING_NEW_ON_TOMORROW = 0x0000003;
     public final static int CREATING_FROM_TODO_LIST = 0x0000004;
+    public final static int CREATING_FROM_USING = 0x0000005;
+
 
     // Views
     private EditText newTask;
@@ -86,9 +88,6 @@ public class CreatingActivity extends AppCompatActivity {
 
         // Upload extras for different activities purpose
         switch (type) {
-            case CREATING_NEW:
-                break;
-
             case EDITING:
                 timeSelected = true;
                 buttonSelectTime.setVisibility(View.VISIBLE);
@@ -103,7 +102,6 @@ public class CreatingActivity extends AppCompatActivity {
                 buttonSelectTime.setVisibility(View.VISIBLE);
                 newTask.setText(intent.getStringExtra("task"));
                 break;
-
         }
 
         // Hide 'selectTime' button while task have not been entered
@@ -185,6 +183,11 @@ public class CreatingActivity extends AppCompatActivity {
             case CREATING_NEW_ON_TOMORROW:
                 intent = new Intent(this, UsingActivity.class);
                 vault.addTomorrow(titleOfTask);
+                break;
+
+            case CREATING_FROM_USING:
+                vault.add(new Task(titleOfTask));
+                intent = new Intent(this, UsingActivity.class);
                 break;
 
             case CREATING_NEW:

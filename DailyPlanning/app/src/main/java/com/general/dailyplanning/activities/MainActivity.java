@@ -34,6 +34,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    // Consts
+    private final int CUT_TASK_LENGTH = 30;
+
     // Vars
     private ArrayList<Task> tasks = new ArrayList<>();
     private ArrayList<String> toDoList = new ArrayList<>();
@@ -147,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(130, 130);
         params.setMargins(0,-3,0,0);
 
+        Converter converter = new Converter(getWindowManager().getDefaultDisplay());
         LinearLayout scrollLayout = findViewById(R.id.toDoLayout);
         // Clear a body
         if (scrollLayout.getChildCount() > 0) {
@@ -156,13 +160,20 @@ public class MainActivity extends AppCompatActivity {
         scrollLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.todo_list_stroke));
 
         int id = 0;
+        String tmp;
         for (String task: toDoList) {
             // Task Block
             view = new TextView(this);
-            view.setText(task);
+            if (task.length() > CUT_TASK_LENGTH) {
+                tmp = task.substring(0, CUT_TASK_LENGTH) + "...";
+                view.setText(tmp);
+            } else {
+                view.setText(task);
+            }
+
             view.setTextSize(18);
             view.setHeight(130);
-            view.setWidth(720);
+            view.setWidth(converter.getWidth(1));
             view.setTextColor(getResources().getColor(R.color.fontWhite));
             view.setGravity(Gravity.CENTER);
             view.setPadding(70, 0, 70, 0);
@@ -239,17 +250,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         TextView view;
-
         for (Task task: tasks) {
             view = new TextView(this);
             view.setText(task.toString());
             view.setBackgroundColor(getResources().getColor(R.color.backgroundGrey));
             view.setTextSize(18);
-            view.setHeight(150);
             view.setTextColor(getResources().getColor(R.color.fontWhite));
             view.setBackground(ContextCompat.getDrawable(this, R.drawable.task_planning));
             view.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            view.setPadding(70, 0, 70, 0);
+            view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            view.setPadding(70, 40, 70, 40);
             view.setTypeface(ResourcesCompat.getFont(this, R.font.light));
             scrollLayout.addView(view);
         }
@@ -260,7 +270,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CreatingActivity.class);
         intent.putExtra("type", CreatingActivity.CREATING_NEW);
         startActivity(intent);
-        //TouchDateListener.hide();
     }
 
     public void onClickSave(View view) {

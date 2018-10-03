@@ -38,7 +38,7 @@
             android:textColor="@color/fontWhite"
             android:textSize="18sp"
             android:padding="15dp"
-            android:maxLength="60"
+            android:maxLength="100"
             android:inputType="textCapSentences|textMultiLine"
             android:imeOptions="actionGo"/>
 
