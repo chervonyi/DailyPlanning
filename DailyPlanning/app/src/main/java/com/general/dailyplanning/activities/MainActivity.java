@@ -301,3 +301,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
+/*
+    Testing images:
+
+    1: 7/10
+    2: 5/10
+    3: 7/10
+    4: 8/10
+    5: 7-8/10
+    6: 8/10
+    7: 6/10
+    8: 8/10
+    9: 5/10
+    10: 7/10
+    11: 7-8/10
+    12: 7/10
+    13: 7/10
+
+
+    2nd Tour:
+
+
+
+ */
