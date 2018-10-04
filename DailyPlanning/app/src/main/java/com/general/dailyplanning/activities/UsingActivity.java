@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -134,8 +135,6 @@ public class UsingActivity extends AppCompatActivity {
         LinearLayout innerLayout;
         MovingTaskListener movingTaskListener;
         Button buttonDelete, buttonEdit;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, 100);
-        params.setMargins(0,10,0,0);
 
         Converter converter = new Converter(getWindowManager().getDefaultDisplay());
 
@@ -144,6 +143,8 @@ public class UsingActivity extends AppCompatActivity {
         if (scrollLayout.getChildCount() > 0) {
             scrollLayout.removeAllViews();
         }
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(converter.getWidth(0.14), LinearLayout.LayoutParams.WRAP_CONTENT);
 
         int id = 0;
         for (Task task: tasks) {
@@ -164,6 +165,7 @@ public class UsingActivity extends AppCompatActivity {
 
             innerLayout = new LinearLayout(this);
             innerLayout.setOrientation(LinearLayout.HORIZONTAL);
+            innerLayout.setGravity(Gravity.CENTER_VERTICAL);
             innerLayout.setTag("task_" + id++);
             innerLayout.addView(view);
 

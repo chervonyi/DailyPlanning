@@ -1,5 +1,5 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:width="30dp" android:height="30dp">
+    <item android:width="30dp" android:height="30dp" android:top="7dp">
         <shape>
             <corners android:radius="30dp" />
             <solid android:color="@color/orange"/>
@@ -7,7 +7,7 @@
     </item>
     <item android:drawable="@drawable/ic_edit" android:width="20dp" android:height="20dp"
         android:left="5dp"
-        android:top="5dp"
+        android:top="12dp"
         android:right="5dp"
         android:bottom="5dp"/>
 </layer-list>
