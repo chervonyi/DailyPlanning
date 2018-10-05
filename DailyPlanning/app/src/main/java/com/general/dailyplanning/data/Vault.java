@@ -1,7 +1,5 @@
 package com.general.dailyplanning.data;
 
-import com.general.dailyplanning.activities.UsingActivity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 

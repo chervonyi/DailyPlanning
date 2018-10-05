@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.general.dailyplanning.R;
+import com.general.dailyplanning.activities.MainActivity;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
@@ -31,7 +32,7 @@ public class TaskService extends Service {
     private Handler mHandler;
     private NotificationCompat.Builder builder;
     private Notification notification;
-    private NotificationManager notificationManager;
+    private NotificationManager notificationManager = null;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -40,13 +41,17 @@ public class TaskService extends Service {
         mVault = DataManipulator.loading(this, "data");
         mHandler.postDelayed( ToastRunnable, 0);
 
+        if (notificationManager == null) {
+            //Log.d("testing", "assign");
+            notificationManager = MainActivity.notificationManager;
+        }
         return START_STICKY_COMPATIBILITY;
     }
 
 
     final Runnable ToastRunnable = new Runnable(){
         public void run(){
-            
+
             // Get current time
             String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
             Task task;

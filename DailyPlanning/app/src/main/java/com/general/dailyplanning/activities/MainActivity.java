@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mainLayout;
     private TextView taskView;
 
+    // Notification variable
+    public static NotificationManager notificationManager;
+
     // Clock
     private final Handler timeClock = new Handler();
     private Runnable minChange = new Runnable() {
@@ -80,21 +83,35 @@ public class MainActivity extends AppCompatActivity {
         // Run only in portrait mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // Loading data from file
+        // ONLY ONE INPUT DATA FROM FILE
+        Log.d("testing", "LOAD");
+        Vault vault = DataManipulator.loading(this, "data");
+        if (vault == null) {
+            // On first ever run program
+            // Create a file with empty vault
+            DataManipulator.saving(this, "data", Vault.getInstance());
+        } else {
+            // Update vault instance
+            Vault.setInstance(vault);
+        }
+
+        vault = Vault.getInstance();
+        tasks = vault.getArray();
+        toDoList = vault.getTomorrowArray();
+
+
+
         // Background service
 
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         startService(new Intent(this, TaskService.class));
 
 
-
-
-
         // Background service
 
 
-
-
-
-
+        // Get components
         dateView = findViewById(R.id.textViewDate);
         buttonSave = findViewById(R.id.buttonSave);
         manualView = findViewById(R.id.textViewStart);
@@ -103,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set size
         setSizes();
-
 
         // Set swipeListener for Task Bar
         taskView.setOnTouchListener(new SwipeDownDateListener(this));
@@ -124,10 +140,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Feature for stop buggy behavior with scrolling
         findViewById(R.id.scrollViewToDoList).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // Feature for stop buggy behavior with scrolling
                 for (MovingToDoListListener listener: listeners) {
                     listener.stopPost();
                 }
@@ -135,17 +151,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
-        // Loading data from file
-        // ONLY ONE INPUT DATA FROM FILE
-        Log.d("testing", "LOAD");
-        Vault vault = DataManipulator.loading(this, "data");
-        if (vault != null) {
-            Vault.setInstance(vault);
-            tasks = vault.getArray();
-            toDoList = vault.getTomorrowArray();
-        }
 
         // Filling up TO-DO List
         updateToDoList();
