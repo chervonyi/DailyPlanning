@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -208,9 +209,10 @@ public class CreatingActivity extends AppCompatActivity {
 
         }
 
+        Log.d("testing", "added - " + titleOfTask);
         // Save vault
         // TODO: Move Vault's saving into onClose() method
-        DataManipulator.saving(this,"data", vault);
+        //DataManipulator.saving(this,"data", vault);
 
         startActivity(intent);
     }

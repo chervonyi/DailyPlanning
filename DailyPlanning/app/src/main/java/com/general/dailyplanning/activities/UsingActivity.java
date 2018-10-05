@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -65,11 +66,18 @@ public class UsingActivity extends AppCompatActivity {
 
             Vault vault = Vault.getInstance();
 
+            Task task;
             // Remove all overdue tasks
-            if (vault.pushTimeLine(time)) {
+
+            /*
+            while((task = vault.pushTimeLine(time)) != null) {
+
                 DataManipulator.saving(context,"data", vault);
                 updateTaskList();
             }
+            */
+
+
 
             // Update time every hh:mm:00 second
             timeClock.postDelayed(this, (60 - seconds) * 1000);
@@ -118,11 +126,16 @@ public class UsingActivity extends AppCompatActivity {
         layoutDate.setOnTouchListener(swdl);
 
         // Loading data
+
+        /*
         Vault vault = DataManipulator.loading(this, "data");
         if (vault != null) {
             Vault.setInstance(vault);
             tasks = vault.getArray();
         }
+        */
+        tasks = Vault.getInstance().getArray();
+
 
         // Filling up taskList with some information
         updateTaskList();
@@ -211,7 +224,7 @@ public class UsingActivity extends AppCompatActivity {
                     vault.remove(idTask);
 
                     // Save vault
-                    DataManipulator.saving(context,"data", vault);
+                    //DataManipulator.saving(context,"data", vault);
 
                     updateTaskList();
                     // TODO: Add anim (Maybe set visibility for removed element like "GONE")
@@ -292,6 +305,10 @@ public class UsingActivity extends AppCompatActivity {
         params3 = (FrameLayout.LayoutParams) buttonAddNewTask.getLayoutParams();
         params3.topMargin = converter.getHeight(0.078);
         buttonAddNewTask.setLayoutParams(params3);
+
+    }
+
+    public static void makeNotification(Task task) {
 
     }
 }

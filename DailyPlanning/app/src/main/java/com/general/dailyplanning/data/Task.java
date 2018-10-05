@@ -44,12 +44,16 @@ public class Task implements Serializable {
         return sHours + ":" + sMin + " - " + task;
     }
 
-    // Getters x2:
+    // Getters x3:
     public int getHours() {
         return hours;
     }
 
     public int getMinutes() {
         return minutes;
+    }
+
+    public String getTask() {
+        return task;
     }
 }

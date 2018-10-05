@@ -1,11 +1,17 @@
 package com.general.dailyplanning.activities;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
+import android.media.RingtoneManager;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +28,8 @@ import android.widget.TextView;
 import com.general.dailyplanning.R;
 import com.general.dailyplanning.components.Converter;
 import com.general.dailyplanning.components.DateComposer;
+import com.general.dailyplanning.components.TaskService;
+import com.general.dailyplanning.components.Vibrate;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
@@ -72,6 +80,20 @@ public class MainActivity extends AppCompatActivity {
         // Run only in portrait mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // Background service
+
+        startService(new Intent(this, TaskService.class));
+
+
+
+
+
+        // Background service
+
+
+
+
+
 
         dateView = findViewById(R.id.textViewDate);
         buttonSave = findViewById(R.id.buttonSave);
@@ -114,7 +136,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         // Loading data from file
+        // ONLY ONE INPUT DATA FROM FILE
+        Log.d("testing", "LOAD");
         Vault vault = DataManipulator.loading(this, "data");
         if (vault != null) {
             Vault.setInstance(vault);
@@ -204,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     vault.removeFromToDoList(idTask);
 
                     // Save vault
-                    DataManipulator.saving(context,"data", vault);
+                    //DataManipulator.saving(context,"data", vault);
 
                     // Refresh panel with new data
                     updateToDoList();
@@ -229,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                     context.startActivity(intent);
 
                     vault.removeFromToDoList(idTask);
-                    DataManipulator.saving(context,"data", vault);
+                    //DataManipulator.saving(context,"data", vault);
 
                     // Refresh panel with new data
                     updateToDoList();
@@ -301,5 +326,14 @@ public class MainActivity extends AppCompatActivity {
         buttonSave.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT,
                 converter.getHeight(0.083), 0,0 ,0 ,0));
 
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("testing", "SAVING");
+        DataManipulator.saving(this, "data", Vault.getInstance());
+        // Loading file
+        //Vault.setInstance(DataManipulator.loading(this, "data"));
+        super.onDestroy();
     }
 }

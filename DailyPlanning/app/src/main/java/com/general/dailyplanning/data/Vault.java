@@ -1,9 +1,6 @@
 package com.general.dailyplanning.data;
 
-import android.util.Log;
-
-import com.general.dailyplanning.activities.MainActivity;
-import com.general.dailyplanning.components.Vibrate;
+import com.general.dailyplanning.activities.UsingActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -122,24 +119,25 @@ public class Vault implements Serializable {
     }
 
     /**
-     * Removes all overdue tasks
+     * Returns and removes first overdue task.
+     * Should be used in while loop to remove all overdue tasks.
      * @param time - current time in string (Like: "11:24")
      */
-    public boolean pushTimeLine(String time) {
+    public Task pushTimeLine(String time) {
         int h = Integer.parseInt(time.substring(0, 2));
         int m = Integer.parseInt(time.substring(3, 5));
         int currTime = makeNum(h, m);
 
-        boolean removed = false;
+        Task toReturn;
         for (int i = 0; i < array.size(); i++) {
-            if (currTime > makeNum(array.get(i).getHours(), array.get(i).getMinutes())) {
-                // TODO Make notification
+            toReturn = array.get(i);
+            if (currTime >= makeNum(toReturn.getHours(), array.get(i).getMinutes())) {
                 array.remove(i);
-                removed = true;
+                return toReturn;
             } else {
                 break;
             }
         }
-        return removed;
+        return null;
     }
 }
