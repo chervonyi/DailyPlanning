@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mainLayout;
     private TextView taskView;
 
-    // Notification variable
-    public static NotificationManager notificationManager;
+
 
     // Clock
     private final Handler timeClock = new Handler();
@@ -100,13 +99,11 @@ public class MainActivity extends AppCompatActivity {
         tasks = vault.getArray();
         toDoList = vault.getTomorrowArray();
 
-
-
         // Background service
 
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        startService(new Intent(this, TaskService.class));
-
+        Log.d("testing_service", "STOP");
+        stopService(new Intent(this, TaskService.class));
+        //startService(new Intent(this, TaskService.class));
 
         // Background service
 
@@ -335,10 +332,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        Log.d("testing", "SAVING");
+        //Log.d("testing", "SAVING");
         DataManipulator.saving(this, "data", Vault.getInstance());
-        // Loading file
-        //Vault.setInstance(DataManipulator.loading(this, "data"));
+
+
+        Log.d("testing_service", "START");
+        startService(new Intent(this, TaskService.class));
+
         super.onDestroy();
     }
 }

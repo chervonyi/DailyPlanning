@@ -2,9 +2,13 @@ package com.general.dailyplanning.activities;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
@@ -55,6 +59,12 @@ public class UsingActivity extends AppCompatActivity {
     // States
     private boolean taskOpened = false;
 
+    // Notification's vars
+    private NotificationCompat.Builder builder;
+    private Notification notification;
+    private NotificationManager notificationManager;
+    private int id = 1;
+
     // Clock
     private final Handler timeClock = new Handler();
     private Runnable minChange = new Runnable() {
@@ -69,15 +79,19 @@ public class UsingActivity extends AppCompatActivity {
             Task task;
             // Remove all overdue tasks
 
-            /*
-            while((task = vault.pushTimeLine(time)) != null) {
 
-                DataManipulator.saving(context,"data", vault);
+            while((task = vault.pushTimeLine(time)) != null) {
+                builder = new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle(task.toString().substring(0, 5))
+                        .setContentText(task.getTask())
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                notification = builder.build();
+                notificationManager.notify(id++, notification);
+
+                // TODO - add to 'updateTaskList' updating 'tasks' from Vault
                 updateTaskList();
             }
-            */
-
-
 
             // Update time every hh:mm:00 second
             timeClock.postDelayed(this, (60 - seconds) * 1000);
@@ -94,6 +108,7 @@ public class UsingActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         context = this;
+        notificationManager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
 
         layoutDate = findViewById(R.id.layoutDate);
         dateView = findViewById(R.id.textViewDate);
@@ -134,7 +149,7 @@ public class UsingActivity extends AppCompatActivity {
             tasks = vault.getArray();
         }
         */
-        tasks = Vault.getInstance().getArray();
+
 
 
         // Filling up taskList with some information
@@ -151,6 +166,7 @@ public class UsingActivity extends AppCompatActivity {
         LinearLayout innerLayout;
         MovingTaskListener movingTaskListener;
         Button buttonDelete, buttonEdit;
+        tasks = Vault.getInstance().getArray();
 
         Converter converter = new Converter(getWindowManager().getDefaultDisplay());
 

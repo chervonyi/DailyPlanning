@@ -1,6 +1,5 @@
 package com.general.dailyplanning.components;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -9,14 +8,11 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Handler;
 import android.os.IBinder;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.general.dailyplanning.R;
-import com.general.dailyplanning.activities.MainActivity;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
@@ -26,58 +22,58 @@ import java.util.Date;
 import java.util.Locale;
 
 public class TaskService extends Service {
+    // Variables
     private int id = 1;
     private Context mContext;
     private Vault mVault;
     private Handler mHandler;
+
+    // Notification's vars
     private NotificationCompat.Builder builder;
     private Notification notification;
-    private NotificationManager notificationManager = null;
+    private NotificationManager notificationManager;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        notificationManager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mHandler = new Handler();
         mContext = this;
         mVault = DataManipulator.loading(this, "data");
-        mHandler.postDelayed( ToastRunnable, 0);
+        int seconds = Integer.parseInt(new SimpleDateFormat("ss", Locale.US).format(new Date()));
 
-        if (notificationManager == null) {
-            //Log.d("testing", "assign");
-            notificationManager = MainActivity.notificationManager;
-        }
-        return START_STICKY_COMPATIBILITY;
+        //mHandler.postDelayed( taskRunnable, (60 - seconds) * 1000);
+        mHandler.postDelayed(taskRunnable, 0);
+        return START_STICKY;
     }
 
 
-    final Runnable ToastRunnable = new Runnable(){
+    final Runnable taskRunnable = new Runnable(){
         public void run(){
-
             // Get current time
             String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
             Task task;
 
-
             while ((task = mVault.pushTimeLine(time)) != null) {
-                // TODO: Fix problem with notificationManager declaration
-
                 builder = new NotificationCompat.Builder(mContext)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle(task.getHours() + ":" + task.getMinutes())
+                        .setContentTitle(task.toString().substring(0, 5))
                         .setContentText(task.getTask())
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
                 notification = builder.build();
 
                 notificationManager.notify(id++, notification);
 
-                Log.d("testing", "removed " + task.getTask());
                 // Save data
                 DataManipulator.saving(mContext,"data", mVault);
             }
-            Log.d("testing", "count of tasks: " + mVault.getArray().size());
 
             // Repeat every 1 minute
-            mHandler.postDelayed( ToastRunnable, 60000);
+            mHandler.postDelayed(taskRunnable, 60000);
         }
     };
 

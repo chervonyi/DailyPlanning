@@ -54,7 +54,6 @@ public class DataManipulator {
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
-
         return vault;
     }
 }

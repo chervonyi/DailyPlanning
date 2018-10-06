@@ -1,5 +1,8 @@
 package com.general.dailyplanning.data;
 
+import android.app.NotificationManager;
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,6 +20,7 @@ public class Vault implements Serializable {
         array = new ArrayList<>();
         tomorrowArray = new ArrayList<>();
     }
+
 
     /**
      * Adds a new task at appropriate position.
