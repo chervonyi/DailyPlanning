@@ -115,6 +115,7 @@ public class UsingActivity extends AppCompatActivity {
         // Run only in portrait mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+
         context = this;
         notificationManager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
 
@@ -319,5 +320,10 @@ public class UsingActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateTaskList();
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

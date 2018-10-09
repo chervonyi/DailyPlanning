@@ -16,11 +16,13 @@ public class Vault implements Serializable {
     // TO-DO List on tomorrow
     private ArrayList<String> tomorrowArray;
 
+    private boolean usedToday;
+
     private Vault() {
         array = new ArrayList<>();
         tomorrowArray = new ArrayList<>();
+        usedToday = false;
     }
-
 
     /**
      * Adds a new task at appropriate position.
@@ -130,6 +132,11 @@ public class Vault implements Serializable {
         int m = Integer.parseInt(time.substring(3, 5));
         int currTime = makeNum(h, m);
 
+        // On time 00:00 reset 'usedToday' flag
+        if (currTime == 0) {
+            usedToday = false;
+        }
+
         // TODO: Remove loop from it. Just add 1 condition to 1st element in array (using 'get' method)
         Task toReturn;
         for (int i = 0; i < array.size(); i++) {
@@ -142,5 +149,17 @@ public class Vault implements Serializable {
             }
         }
         return null;
+    }
+
+    public void setUsedToday(boolean usedToday) {
+        this.usedToday = usedToday;
+    }
+
+    public boolean isUsedToday() {
+        return usedToday;
+    }
+
+    public void clearTomorowTaskList() {
+        tomorrowArray.clear();
     }
 }

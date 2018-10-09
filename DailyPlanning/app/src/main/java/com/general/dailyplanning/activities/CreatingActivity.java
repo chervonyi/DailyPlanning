@@ -197,16 +197,12 @@ public class CreatingActivity extends AppCompatActivity {
         Vault vault = Vault.getInstance();
         Intent intent;
         switch (type) {
-            case EDITING:
-                intent = new Intent(this, UsingActivity.class);
-                vault.add(new Task(titleOfTask));
-                break;
-
             case CREATING_NEW_ON_TOMORROW:
                 intent = new Intent(this, UsingActivity.class);
                 vault.addTomorrow(titleOfTask);
                 break;
 
+            case EDITING:
             case CREATING_FROM_USING:
                 vault.add(new Task(titleOfTask));
                 intent = new Intent(this, UsingActivity.class);
@@ -214,11 +210,7 @@ public class CreatingActivity extends AppCompatActivity {
 
             case CREATING_NEW:
             case CREATING_FROM_TODO_LIST:
-                if (vault.getTomorrowArray().size() == 0) {
-                    intent = new Intent(this, UsingActivity.class);
-                } else {
-                    intent = new Intent(this, MainActivity.class);
-                }
+                intent = new Intent(this, MainActivity.class);
                 vault.add(new Task(titleOfTask));
                 break;
 
@@ -226,11 +218,6 @@ public class CreatingActivity extends AppCompatActivity {
                 intent = new Intent(this, MainActivity.class);
 
         }
-
-        Log.d("testing", "added - " + titleOfTask);
-        // Save vault
-        // TODO: Move Vault's saving into onClose() method
-        //DataManipulator.saving(this,"data", vault);
 
         startActivity(intent);
     }
@@ -250,6 +237,11 @@ public class CreatingActivity extends AppCompatActivity {
         // TODO: Add editView and SelectTimebtn to separate LinearLayout with static height (To fix moving up and down of btnSave)
         buttonSave.setLayoutParams(converter.getParam(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
                 0, converter.getHeight(0.39), 0, 0));
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
 

@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView manualView;
     private LinearLayout mainLayout;
     private TextView taskView;
+    private Button buttonAddNew;
 
     // States
     private static boolean isRunning = false;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /** PRELOAD **/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Run only in portrait mode
@@ -85,28 +87,26 @@ public class MainActivity extends AppCompatActivity {
 
         isRunning = true;
         // Loading data from file
-        // ONLY ONE INPUT DATA FROM FILE
-        Log.d("testing", "LOAD");
         Vault vault = DataManipulator.loading(this, "data");
-        if (vault == null) {
-            // On first ever run program
-            // Create a file with empty vault
-            DataManipulator.saving(this, "data", Vault.getInstance());
-        } else {
+        if (vault != null) {
             // Update vault instance
             Vault.setInstance(vault);
         }
 
         vault = Vault.getInstance();
+
+        if (vault.isUsedToday()) {
+            // Go to UsingActivity
+            Intent intent = new Intent(this, UsingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+
         tasks = vault.getArray();
         toDoList = vault.getTomorrowArray();
 
-        // Background service
-
+        // Start service on background
         startService(new Intent(this, TaskService.class));
-
-        // Background service
-
 
         // Get components
         dateView = findViewById(R.id.textViewDate);
@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
         manualView = findViewById(R.id.textViewStart);
         mainLayout = findViewById(R.id.mainLayout);
         taskView = findViewById(R.id.textViewTasks);
+        buttonAddNew = findViewById(R.id.buttonAddNewTask);
+
 
         // Set size
         setSizes();
@@ -291,17 +293,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void onClickAddNewTask (View view) {
         Intent intent = new Intent(this, CreatingActivity.class);
         intent.putExtra("type", CreatingActivity.CREATING_NEW);
         startActivity(intent);
+        buttonAddNew.setVisibility(View.INVISIBLE);
+
     }
 
     public void onClickSave(View view) {
+        Vault.getInstance().setUsedToday(true);
+        Vault.getInstance().clearTomorowTaskList();
         Intent intent = new Intent(this, UsingActivity.class);
         startActivity(intent);
-        // TODO CLEAR TOMORROW_ARRAY IN VAULT
     }
 
     /**
@@ -329,15 +333,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        Log.d("testing", "SAVING");
         DataManipulator.saving(this, "data", Vault.getInstance());
-
         isRunning = false;
-
         super.onDestroy();
     }
 
     public static boolean isIsRunning() {
         return isRunning;
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }
