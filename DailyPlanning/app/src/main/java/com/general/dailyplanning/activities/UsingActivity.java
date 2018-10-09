@@ -82,15 +82,6 @@ public class UsingActivity extends AppCompatActivity {
 
             Task task;
 
-            // TODO:
-            // 1st try -  Maybe remove this pushTime loop and just in Service loop call static method like:
-            // On removing tasks from Service call:
-            // UsingActivity.updateTaskList();
-
-            // 2nd try - Test what would be if I remove notification builder from here
-            // So, service will be just removed and make notifications and usingActivity will make updating of taskList
-
-
             while((task = vault.pushTimeLine(time)) != null) {
 
                  builder = new NotificationCompat.Builder(context)
@@ -101,19 +92,16 @@ public class UsingActivity extends AppCompatActivity {
                 notification = builder.build();
                 notificationManager.notify(id++, notification);
 
-
-                Log.d("testing", "removed from UsingActivity + update - " + task.getTask());
-
                 removed = true;
             }
 
             if (removed) {
                 updateTaskList();
+                updateTaskList();
             }
 
             // Update time every hh:mm:00 second
             timeClock.postDelayed(this, (60 - seconds) * 1000);
-
         }
     };
 
@@ -158,9 +146,6 @@ public class UsingActivity extends AppCompatActivity {
         // Set touch listener to show "+" button
         TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, buttonAddNewTask);
         layoutDate.setOnTouchListener(swdl);
-
-        // Filling up taskList with some information
-        //updateTaskList();
     }
 
     /**
@@ -177,8 +162,6 @@ public class UsingActivity extends AppCompatActivity {
 
         Converter converter = new Converter(getWindowManager().getDefaultDisplay());
 
-
-        Log.d("testing", "scrollLayout.count: " + scrollLayout.getChildCount());
         // Clear a body
 
         if (scrollLayout.getChildCount() > 0) {
@@ -188,7 +171,7 @@ public class UsingActivity extends AppCompatActivity {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(converter.getWidth(0.14), LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        //int id = 0;
+        int id = 0;
         for (Task task: Vault.getInstance().getArray()) {
             // Task Block
             view = new TextView(this);
@@ -249,11 +232,7 @@ public class UsingActivity extends AppCompatActivity {
                     // Remove necessary element
                     vault.remove(idTask);
 
-                    // Save vault
-                    //DataManipulator.saving(context,"data", vault);
-
                     updateTaskList();
-                    // TODO: Add anim (Maybe set visibility for removed element like "GONE")
                 }
             });
             innerLayout.addView(buttonDelete);

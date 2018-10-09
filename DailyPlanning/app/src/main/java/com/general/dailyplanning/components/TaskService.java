@@ -52,7 +52,7 @@ public class TaskService extends Service {
         int seconds = Integer.parseInt(new SimpleDateFormat("ss", Locale.US).format(new Date()));
 
         if (!MainActivity.isIsRunning()) {
-            mHandler.postDelayed(taskRunnable, 0);
+            mHandler.postDelayed(taskRunnable, (60 - seconds) * 1000);
         } else {
             mHandler.removeCallbacksAndMessages(null);
         }
@@ -82,7 +82,7 @@ public class TaskService extends Service {
             }
 
             // Repeat every 1 minute
-            mHandler.postDelayed(taskRunnable, 3000);
+            mHandler.postDelayed(taskRunnable, 60000);
         }
     };
 
@@ -91,6 +91,4 @@ public class TaskService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-
 }
