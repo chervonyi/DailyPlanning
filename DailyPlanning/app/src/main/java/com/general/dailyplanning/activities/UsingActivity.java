@@ -61,7 +61,6 @@ public class UsingActivity extends AppCompatActivity {
     // States
     private boolean taskOpened = false;
 
-
     // Notification's vars
     private NotificationCompat.Builder builder;
     private Notification notification;
@@ -96,8 +95,7 @@ public class UsingActivity extends AppCompatActivity {
             }
 
             if (removed) {
-                updateTaskList();
-                updateTaskList();
+               recreate();
             }
 
             // Update time every hh:mm:00 second
