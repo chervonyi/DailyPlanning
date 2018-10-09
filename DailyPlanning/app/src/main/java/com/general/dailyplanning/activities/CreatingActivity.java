@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.general.dailyplanning.components.Converter;
 import com.general.dailyplanning.components.DateComposer;
@@ -114,6 +115,7 @@ public class CreatingActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     newTask.clearFocus();
 
+                    Log.d("testing", "UPDATing");
                     // Hide keyboard on click 'Done'
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm != null) {
@@ -125,6 +127,7 @@ public class CreatingActivity extends AppCompatActivity {
                     } else {
                         buttonSelectTime.setVisibility(View.INVISIBLE);
                     }
+
                     return true;
                 }
                 return false;
@@ -139,16 +142,23 @@ public class CreatingActivity extends AppCompatActivity {
     public void onClickSelectTime(View view) {
         // Default position of time picker
         Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
+        final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        final int minute = mcurrentTime.get(Calendar.MINUTE);
+        final Context context = this;
 
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                // Check if selected time less than a current one
+                if ((selectedHour * 100 + selectedMinute) < (hour * 100 + minute)) {
+                    Toast.makeText(context, "Bad time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 String hours = selectedHour < 10 ? "0" + selectedHour : String.valueOf(selectedHour);
                 String minutes = selectedMinute < 10 ? "0" + selectedMinute : String.valueOf(selectedMinute);
+
 
                 String tmp;
                 // Pattern: "12:34 - Reading a book"
@@ -157,13 +167,21 @@ public class CreatingActivity extends AppCompatActivity {
                     tmp = tmp.substring(5);
                     tmp = hours + ":" + minutes + tmp;
                 } else {
+                    buttonSelectTime.setText("CHANGE TIME");
                     timeSelected = true;
                     tmp = hours + ":" + minutes + " - " + newTask.getText().toString();
                 }
+
                 newTask.setText(tmp);
 
+                if (timeSelected) {
+                    buttonSave.setVisibility(View.VISIBLE);
+                } else {
+                    buttonSave.setVisibility(View.INVISIBLE);
+                }
+
             }
-        }, hour, minute, true);
+        }, hour + 1, 0, true);
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
     }

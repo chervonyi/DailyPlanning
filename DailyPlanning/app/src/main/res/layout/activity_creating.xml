@@ -63,7 +63,8 @@
             android:textColor="@color/fontWhite"
             android:text="@string/saveButton"
             android:textSize="14sp"
-            android:onClick="onClickSave"/>
+            android:onClick="onClickSave"
+            android:visibility="invisible"/>
 
     </LinearLayout>
 
