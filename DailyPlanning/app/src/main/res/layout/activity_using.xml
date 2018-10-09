@@ -52,7 +52,7 @@
                 android:overScrollMode="never">
 
                 <LinearLayout
-                    android:id="@+id/scrollLayout"
+                    android:id="@+id/scrollLayout_using"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"/>

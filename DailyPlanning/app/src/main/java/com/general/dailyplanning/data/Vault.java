@@ -130,6 +130,7 @@ public class Vault implements Serializable {
         int m = Integer.parseInt(time.substring(3, 5));
         int currTime = makeNum(h, m);
 
+        // TODO: Remove loop from it. Just add 1 condition to 1st element in array (using 'get' method)
         Task toReturn;
         for (int i = 0; i < array.size(); i++) {
             toReturn = array.get(i);
