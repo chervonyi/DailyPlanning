@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mainLayout;
     private TextView taskView;
 
-
+    // States
+    private static boolean isRunning = false;
 
     // Clock
     private final Handler timeClock = new Handler();
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         // Run only in portrait mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        isRunning = true;
         // Loading data from file
         // ONLY ONE INPUT DATA FROM FILE
         Log.d("testing", "LOAD");
@@ -101,9 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Background service
 
-        Log.d("testing_service", "STOP");
-        stopService(new Intent(this, TaskService.class));
-        //startService(new Intent(this, TaskService.class));
+        startService(new Intent(this, TaskService.class));
 
         // Background service
 
@@ -230,9 +230,6 @@ public class MainActivity extends AppCompatActivity {
 
                     vault.removeFromToDoList(idTask);
 
-                    // Save vault
-                    //DataManipulator.saving(context,"data", vault);
-
                     // Refresh panel with new data
                     updateToDoList();
                 }
@@ -332,13 +329,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
-        //Log.d("testing", "SAVING");
+        Log.d("testing", "SAVING");
         DataManipulator.saving(this, "data", Vault.getInstance());
 
-
-        Log.d("testing_service", "START");
-        startService(new Intent(this, TaskService.class));
+        isRunning = false;
 
         super.onDestroy();
+    }
+
+    public static boolean isIsRunning() {
+        return isRunning;
     }
 }

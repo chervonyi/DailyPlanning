@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.general.dailyplanning.R;
 import com.general.dailyplanning.components.Converter;
 import com.general.dailyplanning.components.DateComposer;
+import com.general.dailyplanning.components.TaskService;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
@@ -55,6 +56,7 @@ public class UsingActivity extends AppCompatActivity {
     private RelativeLayout layoutDate;
     private ScrollView scrollView;
     private Button buttonAddNewTask;
+    private LinearLayout scrollLayout;
 
     // States
     private boolean taskOpened = false;
@@ -73,15 +75,15 @@ public class UsingActivity extends AppCompatActivity {
             int seconds = Integer.parseInt(new SimpleDateFormat("ss", Locale.US).format(new Date()));
             String text = time + " " + DateComposer.getDate();
             dateView.setText(text);
+            boolean removed = false;
 
             Vault vault = Vault.getInstance();
 
             Task task;
-            // Remove all overdue tasks
-
 
             while((task = vault.pushTimeLine(time)) != null) {
-                builder = new NotificationCompat.Builder(context)
+
+                 builder = new NotificationCompat.Builder(context)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(task.toString().substring(0, 5))
                         .setContentText(task.getTask())
@@ -89,13 +91,15 @@ public class UsingActivity extends AppCompatActivity {
                 notification = builder.build();
                 notificationManager.notify(id++, notification);
 
-                // TODO - add to 'updateTaskList' updating 'tasks' from Vault
-                updateTaskList();
+                removed = true;
+            }
+
+            if (removed) {
+               recreate();
             }
 
             // Update time every hh:mm:00 second
             timeClock.postDelayed(this, (60 - seconds) * 1000);
-
         }
     };
 
@@ -115,6 +119,7 @@ public class UsingActivity extends AppCompatActivity {
         buttonRemind = findViewById(R.id.buttonRemind);
         scrollView = findViewById(R.id.scrollView);
         buttonAddNewTask = findViewById(R.id.buttonAddNewTask);
+        scrollLayout = findViewById(R.id.scrollLayout_using);
 
         setSizes();
 
@@ -139,21 +144,6 @@ public class UsingActivity extends AppCompatActivity {
         // Set touch listener to show "+" button
         TouchSwipeDateListener swdl = new TouchSwipeDateListener(this, buttonAddNewTask);
         layoutDate.setOnTouchListener(swdl);
-
-        // Loading data
-
-        /*
-        Vault vault = DataManipulator.loading(this, "data");
-        if (vault != null) {
-            Vault.setInstance(vault);
-            tasks = vault.getArray();
-        }
-        */
-
-
-
-        // Filling up taskList with some information
-        updateTaskList();
     }
 
     /**
@@ -161,25 +151,26 @@ public class UsingActivity extends AppCompatActivity {
      */
     @SuppressLint("ClickableViewAccessibility")
     private void updateTaskList() {
-        final Context context = this;
         TextView view;
         LinearLayout innerLayout;
         MovingTaskListener movingTaskListener;
         Button buttonDelete, buttonEdit;
+
         tasks = Vault.getInstance().getArray();
 
         Converter converter = new Converter(getWindowManager().getDefaultDisplay());
 
-        LinearLayout scrollLayout = findViewById(R.id.scrollLayout);
         // Clear a body
+
         if (scrollLayout.getChildCount() > 0) {
             scrollLayout.removeAllViews();
         }
 
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(converter.getWidth(0.14), LinearLayout.LayoutParams.WRAP_CONTENT);
 
         int id = 0;
-        for (Task task: tasks) {
+        for (Task task: Vault.getInstance().getArray()) {
             // Task Block
             view = new TextView(this);
             view.setText(task.toString());
@@ -239,11 +230,7 @@ public class UsingActivity extends AppCompatActivity {
                     // Remove necessary element
                     vault.remove(idTask);
 
-                    // Save vault
-                    //DataManipulator.saving(context,"data", vault);
-
                     updateTaskList();
-                    // TODO: Add anim (Maybe set visibility for removed element like "GONE")
                 }
             });
             innerLayout.addView(buttonDelete);
@@ -324,7 +311,9 @@ public class UsingActivity extends AppCompatActivity {
 
     }
 
-    public static void makeNotification(Task task) {
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateTaskList();
     }
 }

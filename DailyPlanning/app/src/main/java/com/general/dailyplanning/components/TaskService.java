@@ -13,15 +13,19 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.general.dailyplanning.R;
+import com.general.dailyplanning.activities.MainActivity;
+import com.general.dailyplanning.activities.UsingActivity;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class TaskService extends Service {
+    final String TAG = "testing";
     // Variables
     private int id = 1;
     private Context mContext;
@@ -37,23 +41,29 @@ public class TaskService extends Service {
     public void onCreate() {
         super.onCreate();
         notificationManager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
+        mHandler = new Handler();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mHandler = new Handler();
+        Log.d(TAG, "onStartCommand: ");
         mContext = this;
         mVault = DataManipulator.loading(this, "data");
         int seconds = Integer.parseInt(new SimpleDateFormat("ss", Locale.US).format(new Date()));
 
-        //mHandler.postDelayed( taskRunnable, (60 - seconds) * 1000);
-        mHandler.postDelayed(taskRunnable, 0);
+        if (!MainActivity.isIsRunning()) {
+            mHandler.postDelayed(taskRunnable, (60 - seconds) * 1000);
+        } else {
+            mHandler.removeCallbacksAndMessages(null);
+        }
+
         return START_STICKY;
     }
 
 
     final Runnable taskRunnable = new Runnable(){
         public void run(){
+            Log.d(TAG, "run: ");
             // Get current time
             String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
             Task task;
@@ -67,7 +77,6 @@ public class TaskService extends Service {
                 notification = builder.build();
 
                 notificationManager.notify(id++, notification);
-
                 // Save data
                 DataManipulator.saving(mContext,"data", mVault);
             }
