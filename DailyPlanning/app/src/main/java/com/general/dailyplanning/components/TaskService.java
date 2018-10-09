@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Handler;
 import android.os.IBinder;
@@ -70,9 +71,11 @@ public class TaskService extends Service {
 
             while ((task = mVault.pushTimeLine(time)) != null) {
                 builder = new NotificationCompat.Builder(mContext)
-                        .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(task.toString().substring(0, 5))
                         .setContentText(task.getTask())
+                        .setSmallIcon(R.mipmap.small_icon_f)
+                        .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(),
+                                R.mipmap.planning_icon_f))
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                 notification = builder.build();
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DailyPlanning</string>
+    <string name="app_name">Daily Planning</string>
     <string name="tasks">T A S K S</string>
     <string name="start">Tap on date to add a new task or just swipe down to review a Task List for today</string>
     <string name="tasksForToday">Tasks  for  today:</string>

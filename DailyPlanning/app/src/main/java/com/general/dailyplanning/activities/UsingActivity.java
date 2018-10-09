@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Handler;
@@ -83,11 +84,14 @@ public class UsingActivity extends AppCompatActivity {
 
             while((task = vault.pushTimeLine(time)) != null) {
 
-                 builder = new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle(task.toString().substring(0, 5))
-                        .setContentText(task.getTask())
-                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                builder = new NotificationCompat.Builder(context)
+                    .setContentTitle(task.toString().substring(0, 5))
+                    .setContentText(task.getTask())
+                    .setSmallIcon(R.mipmap.small_icon_f)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
+                            R.mipmap.planning_icon_f))
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+
                 notification = builder.build();
                 notificationManager.notify(id++, notification);
 
