@@ -40,7 +40,6 @@ public class CreatingActivity extends AppCompatActivity {
     public final static int CREATING_FROM_TODO_LIST = 0x0000004;
     public final static int CREATING_FROM_USING = 0x0000005;
 
-
     // Views
     private EditText newTask;
     private Button buttonSelectTime;
@@ -115,7 +114,6 @@ public class CreatingActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     newTask.clearFocus();
 
-                    Log.d("testing", "UPDATing");
                     // Hide keyboard on click 'Done'
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm != null) {
@@ -128,6 +126,11 @@ public class CreatingActivity extends AppCompatActivity {
                         buttonSelectTime.setVisibility(View.INVISIBLE);
                     }
 
+                    if (newTask.getText().length() > 0 && type == CreatingActivity.CREATING_NEW_ON_TOMORROW) {
+                        buttonSave.setVisibility(View.VISIBLE);
+                    } else {
+                        buttonSave.setVisibility(View.INVISIBLE);
+                    }
                     return true;
                 }
                 return false;

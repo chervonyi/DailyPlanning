@@ -99,7 +99,7 @@ public class UsingActivity extends AppCompatActivity {
             }
 
             if (removed) {
-               recreate();
+                recreate();
             }
 
             // Update time every hh:mm:00 second

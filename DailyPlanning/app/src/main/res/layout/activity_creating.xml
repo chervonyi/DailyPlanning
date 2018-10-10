@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:minHeight="60dp"
             android:background="@drawable/newtask"
-            android:fontFamily="@font/sansation"
+            android:fontFamily="@font/light"
             android:textAlignment="center"
             android:hint="@string/placeholderNewTask"
             android:textColorHint="@color/fontLightGrey"
