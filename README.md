@@ -13,9 +13,9 @@ _**Requirements:**_
 * Show current time and date
 
 <br/>
-<br/>
 
 <details><summary><b>SCREENS <i>(clickable)</i></b></summary>
+  <br/>
   <p align="center">
     <img src="https://i.imgur.com/dBoFzBz.jpg" width="300" />
     <img src="https://i.imgur.com/W9e0C7y.jpg" width="300" />
@@ -25,7 +25,6 @@ _**Requirements:**_
 </details>
 
 
-<br/>
 <br/>
 
 ## Change Log
