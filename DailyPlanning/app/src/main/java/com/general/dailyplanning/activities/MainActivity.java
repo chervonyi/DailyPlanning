@@ -1,23 +1,14 @@
 package com.general.dailyplanning.activities;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Point;
-import android.media.RingtoneManager;
 import android.os.Handler;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +20,6 @@ import com.general.dailyplanning.R;
 import com.general.dailyplanning.components.Converter;
 import com.general.dailyplanning.components.DateComposer;
 import com.general.dailyplanning.components.TaskService;
-import com.general.dailyplanning.components.Vibrate;
 import com.general.dailyplanning.data.DataManipulator;
 import com.general.dailyplanning.data.Task;
 import com.general.dailyplanning.data.Vault;
@@ -303,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickSave(View view) {
         Vault.getInstance().setUsedToday(true);
-        Vault.getInstance().clearTomorowTaskList();
+        Vault.getInstance().clearTomorrowTaskList();
         Intent intent = new Intent(this, UsingActivity.class);
         startActivity(intent);
     }

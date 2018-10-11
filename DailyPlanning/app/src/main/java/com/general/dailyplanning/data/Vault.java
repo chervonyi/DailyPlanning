@@ -125,28 +125,16 @@ public class Vault implements Serializable {
     /**
      * Returns and removes first overdue task.
      * Should be used in while loop to remove all overdue tasks.
-     * @param time - current time in string (Like: "11:24")
+     * @param h - hours
+     * @param m - minutes
      */
-    public Task pushTimeLine(String time) {
-        int h = Integer.parseInt(time.substring(0, 2));
-        int m = Integer.parseInt(time.substring(3, 5));
+    public Task pushTimeLine(int h, int m) {
         int currTime = makeNum(h, m);
 
-        // On time 00:00 reset 'usedToday' flag
-        if (currTime == 0) {
-            usedToday = false;
-        }
-
-        // TODO: Remove loop from it. Just add 1 condition to 1st element in array (using 'get' method)
-        Task toReturn;
-        for (int i = 0; i < array.size(); i++) {
-            toReturn = array.get(i);
-            if (currTime >= makeNum(toReturn.getHours(), array.get(i).getMinutes())) {
-                array.remove(i);
-                return toReturn;
-            } else {
-                break;
-            }
+        Task toReturn = array.get(0);
+        if (currTime >= makeNum(toReturn.getHours(), toReturn.getMinutes())) {
+            array.remove(0);
+            return toReturn;
         }
         return null;
     }
@@ -159,7 +147,7 @@ public class Vault implements Serializable {
         return usedToday;
     }
 
-    public void clearTomorowTaskList() {
+    public void clearTomorrowTaskList() {
         tomorrowArray.clear();
     }
 }

@@ -69,7 +69,16 @@ public class TaskService extends Service {
             String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
             Task task;
 
-            while ((task = mVault.pushTimeLine(time)) != null) {
+            int h = Integer.parseInt(time.substring(0, 2));
+            int m = Integer.parseInt(time.substring(3, 5));
+
+            // On time 00:00 reset 'usedToday' flag
+            if (h * 100 + m == 0) {
+                mVault.setUsedToday(false);
+                DataManipulator.saving(mContext,"data", mVault);
+            }
+
+            while ((task = mVault.pushTimeLine(h, m)) != null) {
                 builder = new NotificationCompat.Builder(mContext)
                         .setContentTitle(task.toString().substring(0, 5))
                         .setContentText(task.getTask())
