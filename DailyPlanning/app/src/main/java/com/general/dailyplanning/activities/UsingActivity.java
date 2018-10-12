@@ -73,6 +73,8 @@ public class UsingActivity extends AppCompatActivity {
     private Runnable minChange = new Runnable() {
         public void run() {
             String time = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
+            int h = Integer.parseInt(time.substring(0, 2));
+            int m = Integer.parseInt(time.substring(3, 5));
             int seconds = Integer.parseInt(new SimpleDateFormat("ss", Locale.US).format(new Date()));
             String text = time + " " + DateComposer.getDate();
             dateView.setText(text);
@@ -82,7 +84,7 @@ public class UsingActivity extends AppCompatActivity {
 
             Task task;
 
-            while((task = vault.pushTimeLine(time)) != null) {
+            while((task = vault.pushTimeLine(h, m)) != null) {
 
                 builder = new NotificationCompat.Builder(context)
                     .setContentTitle(task.toString().substring(0, 5))

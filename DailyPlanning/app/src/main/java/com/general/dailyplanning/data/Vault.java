@@ -131,11 +131,14 @@ public class Vault implements Serializable {
     public Task pushTimeLine(int h, int m) {
         int currTime = makeNum(h, m);
 
-        Task toReturn = array.get(0);
-        if (currTime >= makeNum(toReturn.getHours(), toReturn.getMinutes())) {
-            array.remove(0);
-            return toReturn;
+        if (array.size() > 0) {
+            Task toReturn = array.get(0);
+            if (currTime >= makeNum(toReturn.getHours(), toReturn.getMinutes())) {
+                array.remove(0);
+                return toReturn;
+            }
         }
+
         return null;
     }
 
