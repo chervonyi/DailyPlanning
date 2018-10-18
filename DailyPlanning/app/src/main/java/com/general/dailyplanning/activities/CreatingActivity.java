@@ -222,6 +222,7 @@ public class CreatingActivity extends AppCompatActivity {
 
         }
 
+        DataManipulator.saving(this,"data", vault);
         startActivity(intent);
     }
 

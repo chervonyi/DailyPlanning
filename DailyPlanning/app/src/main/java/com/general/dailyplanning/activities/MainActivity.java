@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -81,9 +82,10 @@ public class MainActivity extends AppCompatActivity {
         if (vault != null) {
             // Update vault instance
             Vault.setInstance(vault);
+        } else {
+            vault = Vault.getInstance();
         }
 
-        vault = Vault.getInstance();
 
         if (vault.isUsedToday()) {
             // Go to UsingActivity
@@ -106,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         taskView = findViewById(R.id.textViewTasks);
         buttonAddNew = findViewById(R.id.buttonAddNewTask);
 
-
         // Set size
         setSizes();
 
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         taskView.setOnTouchListener(new SwipeDownDateListener(this));
 
         // Set touchListener to show "+" button
-        TouchDateListener touchDateListener = new TouchDateListener(this, (Button) findViewById(R.id.buttonAddNewTask));
+        TouchDateListener touchDateListener = new TouchDateListener(this, buttonAddNew);
         dateView.setOnTouchListener(touchDateListener);
 
         // Update date

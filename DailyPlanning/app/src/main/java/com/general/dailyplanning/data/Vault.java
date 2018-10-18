@@ -153,4 +153,6 @@ public class Vault implements Serializable {
     public void clearTomorrowTaskList() {
         tomorrowArray.clear();
     }
+
+    public void clearMainArray() { array.clear(); }
 }

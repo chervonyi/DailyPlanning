@@ -73,7 +73,8 @@ public class TaskService extends Service {
             int m = Integer.parseInt(time.substring(3, 5));
 
             // On time 00:00 reset 'usedToday' flag
-            if (h * 100 + m == 0) {
+            if (h == 0 && mVault.isUsedToday()) {
+                mVault.clearMainArray();
                 mVault.setUsedToday(false);
                 DataManipulator.saving(mContext,"data", mVault);
             }
